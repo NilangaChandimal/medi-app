@@ -10,8 +10,8 @@ class Pharmacy extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'registration_number', 'license_details',
-        'address', 'phone', 'verified_at'
+        'name', 'email', 'registration_number', 'license_details',
+        'address', 'phone', 'is_blocked', 'status', 'profile_picture', 'password', 'remember_token', 'verified_at'
     ];
 
     public function user()

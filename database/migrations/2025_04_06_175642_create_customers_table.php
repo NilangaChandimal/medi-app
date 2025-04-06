@@ -11,16 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pharmacies', function (Blueprint $table) {
+        Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('registration_number')->unique();
-            $table->string('license_details');
             $table->text('address');
             $table->string('phone');
             $table->boolean('is_blocked')->default(false);
-            $table->enum('status', ['active', 'inactive'])->default('inactive');
             $table->string('profile_picture')->nullable();
             $table->string('password');
             $table->string('remember_token')->nullable();
@@ -34,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pharmacies');
+        Schema::dropIfExists('customers');
     }
 };

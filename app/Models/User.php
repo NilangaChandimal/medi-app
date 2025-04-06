@@ -18,9 +18,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'name', 'email', 'password', 'role', 'is_blocked'
     ];
 
     /**
@@ -44,5 +42,40 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function pharmacy()
+    {
+        return $this->hasOne(Pharmacy::class);
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'customer_id');
+    }
+
+    public function chats()
+    {
+        return $this->hasMany(Chat::class, 'customer_id');
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'customer_id');
+    }
+
+    public function savedPharmacies()
+    {
+        return $this->belongsToMany(Pharmacy::class, 'customer_pharmacy');
+    }
+
+    public function adminMessages()
+    {
+        return $this->hasMany(ContactAdmin::class);
     }
 }

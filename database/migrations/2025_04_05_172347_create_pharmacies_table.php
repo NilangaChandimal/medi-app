@@ -19,9 +19,10 @@ return new class extends Migration
             $table->string('license_details');
             $table->text('address');
             $table->string('phone');
+            $table->string('city');
             $table->boolean('is_blocked')->default(false);
             $table->enum('status', ['active', 'inactive'])->default('inactive');
-            $table->string('profile_picture')->nullable();
+            $table->string('profile_image')->nullable();
             $table->string('password');
             $table->string('remember_token')->nullable();
             $table->timestamp('verified_at')->nullable();

@@ -4,14 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Pharmacy extends Model
+class Pharmacy extends Authenticatable
 {
-    use HasFactory;
 
     protected $fillable = [
         'name', 'email', 'registration_number', 'license_details',
-        'address', 'phone', 'is_blocked', 'status', 'profile_picture', 'password', 'remember_token', 'verified_at'
+        'address', 'phone', 'city', 'is_blocked', 'status', 'profile_image', 'password', 'remember_token', 'verified_at'
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    protected $casts = [
+        'is_blocked' => 'boolean',
+        'verified_at' => 'datetime',
     ];
 
     public function user()
@@ -41,6 +51,14 @@ class Pharmacy extends Model
 
     public function customers()
     {
-        return $this->belongsToMany(User::class, 'customer_pharmacy');
+        return $this->belongsToMany(Customer::class);
+    }
+    public function pharmacyPosts()
+    {
+        return $this->hasMany(PharmacyPost::class);
+    }
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
     }
 }

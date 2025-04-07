@@ -14,9 +14,12 @@ return new class extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('chat_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->text('message');
+            $table->unsignedBigInteger('sender_id');
+            $table->string('sender_type'); // Add this line to specify the type of sender (customer, pharmacy, etc.)
+            $table->text('message')->charset('utf8mb4')->collation('utf8mb4_unicode_ci');
+            $table->string('file_path')->nullable(); // Add this line to store file paths
             $table->timestamps();
+            $table->index(['sender_id', 'sender_type']);
         });
     }
 

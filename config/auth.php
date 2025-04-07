@@ -40,10 +40,21 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
         'admin' => [
         'driver' => 'session',
         'provider' => 'admins',
-    ],
+        ],
+
+        'pharmacy' => [
+            'driver' => 'session',
+            'provider' => 'pharmacies',
+        ],
+
+        'customer' => [
+            'driver' => 'session',
+            'provider' => 'customers',
+        ],
     ],
 
     /*
@@ -72,7 +83,17 @@ return [
         'admins' => [
         'driver' => 'eloquent',
         'model' => App\Models\Admin::class,
-    ],
+        ],
+
+        'pharmacies' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Pharmacy::class,
+        ],
+
+        'customers' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Customer::class,
+        ],
 
         // 'users' => [
         //     'driver' => 'database',

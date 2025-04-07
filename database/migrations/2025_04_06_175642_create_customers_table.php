@@ -17,8 +17,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->text('address');
             $table->string('phone');
+            $table->string('city');
             $table->boolean('is_blocked')->default(false);
-            $table->string('profile_picture')->nullable();
+            $table->string('profile_image')->nullable();
             $table->string('password');
             $table->string('remember_token')->nullable();
             $table->timestamp('verified_at')->nullable();

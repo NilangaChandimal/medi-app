@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('chats', function (Blueprint $table) {
+        Schema::create('customer_posts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('customer_id');
-            $table->unsignedBigInteger('pharmacy_id');
+            $table->text('content');
+            $table->string('image')->nullable();
+            $table->string('video')->nullable();
+            $table->enum('visibility', ['pharmacy', 'public'])->default('public');
             $table->timestamps();
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
-            $table->foreign('pharmacy_id')->references('id')->on('pharmacies')->onDelete('cascade');
         });
     }
 
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('chats');
+        Schema::dropIfExists('customer_posts');
     }
 };

@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminSupportController;
 use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Auth\CustomerAuthController;
 use App\Http\Controllers\Auth\PharmacyAuthController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerPostController;
@@ -27,7 +29,32 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('register', [AdminAuthController::class, 'register']);
     Route::middleware('auth:admin')->group(function () {
         Route::get('home', [AdminController::class, 'index'])->name('home');
+        Route::get('/statistics/details/{month}', [AdminController::class, 'statisticsDetails'])->name('statistics.details');
         Route::get('logout', [AdminAuthController::class, 'logout'])->name('logout');
+
+        //posts
+        Route::get('/posts', [AdminController::class, 'postsindex'])->name('posts.index');
+        Route::delete('/posts/{post}/{type}', [AdminController::class, 'destroy'])->name('posts.destroy');
+
+        // pharmacy status
+        Route::get('/pharmacies', [AdminController::class, 'pharmacystatus'])->name('pharmacies.index');
+        Route::post('/pharmacies/{pharmacy}/toggle-status', [AdminController::class, 'toggleStatus'])->name('pharmacies.toggle-status');
+
+        Route::get('/customers', [AdminController::class, 'customerstatus'])->name('customers.show');
+
+        // User Management (Customers & Pharmacies)
+        Route::get('/users', [AdminController::class, 'customerindex'])->name('users.index');
+        Route::post('/users/{user}/toggle-block', [AdminController::class, 'toggleBlock'])->name('users.toggle-block');
+
+        //chats
+        Route::get('/chats', [AdminController::class, 'chatindex'])->name('chats.index');
+        Route::get('/chats/{chat}', [AdminController::class, 'chatshow'])->name('chats.show');
+        // Route::delete('/chats/{chat}', [AdminController::class, 'chatdestroy'])->name('chats.destroy');
+
+        //suport
+        Route::get('/admin/support-tickets', [AdminSupportController::class, 'index'])->name('support.index');
+        Route::get('/admin/support-tickets/{ticket}', [AdminSupportController::class, 'show'])->name('support.show');
+        Route::put('/admin/support-tickets/{ticket}', [AdminSupportController::class, 'update'])->name('support.update');
 
     });
 });
@@ -65,6 +92,9 @@ Route::prefix('pharmacy')->name('pharmacy.')->group(function () {
         Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
         Route::put('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
 
+        //support
+        Route::get('/contact-admin', [ContactController::class, 'create'])->name('contact.create');
+        Route::post('/contact-admin', [ContactController::class, 'store'])->name('contact.store');
 
     });
 });
@@ -108,5 +138,9 @@ Route::prefix('customer')->name('customer.')->group(function () {
 
         //rating
         Route::post('/orders/{order}/ratings', [RatingController::class, 'store'])->name('ratings.store');
+
+        //support
+        Route::get('/contact-admin', [ContactController::class, 'create'])->name('contact.create');
+        Route::post('/contact-admin', [ContactController::class, 'store'])->name('contact.store');
     });
 });

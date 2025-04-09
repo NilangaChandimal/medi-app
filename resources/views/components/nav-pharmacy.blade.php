@@ -15,7 +15,7 @@
                 </svg>
                 <span class="absolute top-0 right-0 inline-block w-2 h-2 bg-red-600 rounded-full"></span>
             </button>
-
+            <a href="{{ route('pharmacy.contact.create') }}" class="text-gray-300 hover:text-white">Contact Admin</a>
             {{-- <a href="{{ route('worker.profile') }}" class="text-gray-300 hover:text-white">Profile</a> --}}
             <a href="{{ route('pharmacy.logout') }}" class="text-gray-300 hover:text-white">Logout</a>
         </div>

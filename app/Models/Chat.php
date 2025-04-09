@@ -33,4 +33,13 @@ class Chat extends Model
     {
         return $this->hasOne(Message::class)->latestOfMany();
     }
+    public function offers()
+    {
+        return $this->hasMany(Offer::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 }

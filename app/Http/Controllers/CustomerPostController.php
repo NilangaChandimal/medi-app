@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\CustomerPost;
+use App\Models\Notification;
+use App\Models\Pharmacy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -52,8 +54,19 @@ class CustomerPostController extends Controller
             $posts->video = 'CustomerPost/videos/' . $videoName;
         }
 
-
         $posts->save();
+
+        // if ($posts->visibility === 'pharmacy') {
+            Pharmacy::where('is_blocked', false)->where('status', 'active')->get();
+
+
+                Notification::create([
+                    'customer_post_id' => $posts->id,
+                    'customer_id' => $posts->customer_id,
+                    'message' => 'A new customer post is available.',
+                ]);
+            
+        // }
 
         return redirect()->route('customer.post.index')->with('success', 'Posts created successfully.');
     }

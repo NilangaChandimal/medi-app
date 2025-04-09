@@ -13,13 +13,17 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('pharmacy_id')->constrained('pharmacies')->onDelete('cascade');
-            $table->foreignId('post_id')->constrained()->onDelete('cascade');
-            $table->enum('status', ['pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled']);
-            $table->decimal('total_amount', 10, 2);
+            $table->unsignedBigInteger('customer_id');
+            $table->unsignedBigInteger('pharmacy_id');
+            $table->unsignedBigInteger('customer_post_id');
+            $table->string('status')->default('pending'); // pending, accepted, delivered
             $table->timestamps();
+
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+            $table->foreign('pharmacy_id')->references('id')->on('pharmacies')->onDelete('cascade');
+            $table->foreign('customer_post_id')->references('id')->on('customer_posts')->onDelete('cascade');
         });
+
     }
 
     /**

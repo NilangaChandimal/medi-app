@@ -48,7 +48,8 @@ public function pharmacy(Request $request)
 {
     $search = $request->input('search');
 
-    $query = Pharmacy::query();
+    $query = Pharmacy::query()
+        ->withAvg('ratings', 'rating'); // Load average rating
 
     // Apply search if provided
     if ($search) {
@@ -62,5 +63,6 @@ public function pharmacy(Request $request)
 
     return view('Customer.pharmacy', compact('pharmacies', 'search'));
 }
+
 
 }

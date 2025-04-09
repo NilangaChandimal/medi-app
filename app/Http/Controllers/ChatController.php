@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Chat;
 use App\Models\Message;
+use App\Models\Offer;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ChatController extends Controller
@@ -31,25 +33,30 @@ class ChatController extends Controller
     }
 
     public function show($id)
-    {
-        $chat = Chat::findOrFail($id);
-        $messages = $chat->messages;
-        $user = Auth::user();
+{
+    $chat = Chat::findOrFail($id); // Retrieve the chat
+    $messages = $chat->messages;
+    $user = Auth::user();
 
-        // Filter chats based on the user type (Customer or pharmacy)
-        if ($user instanceof \App\Models\Customer) {
-            $chats = Chat::where('customer_id', $user->id)->get();
-            $userType = 'customer';
-        } elseif ($user instanceof \App\Models\Pharmacy) {
-            $chats = Chat::where('pharmacy_id', $user->id)->get();
-            $userType = 'pharmacy';
-        } else {
-            $chats = collect(); // No chats for other users
-            $userType = '';
-        }
+    // Fetch the offer data separately if it's stored in a separate table
+    $offers = Offer::where('chat_id', $id)->get(); // Assuming you have an 'offers' table with a foreign key to the 'chats' table
 
-        return view('chats.show', compact('chat', 'messages', 'userType', 'chats'));
+    // Filter chats based on the user type (Customer or pharmacy)
+    if ($user instanceof \App\Models\Customer) {
+        $chats = Chat::where('customer_id', $user->id)->get();
+        $userType = 'customer';
+    } elseif ($user instanceof \App\Models\Pharmacy) {
+        $chats = Chat::where('pharmacy_id', $user->id)->get();
+        $userType = 'pharmacy';
+    } else {
+        $chats = collect(); // No chats for other users
+        $userType = '';
     }
+
+    return view('chats.show', compact('chat', 'messages', 'offers', 'userType', 'chats'));
+}
+
+
 
 
 
@@ -91,6 +98,7 @@ class ChatController extends Controller
             $message->audio = $audioPath;
         }
     }
+    $message->payment_button = $request->has('payment_button') ? true : false;
 
     $message->save();
 
@@ -100,4 +108,52 @@ class ChatController extends Controller
     $userType = $request->user() instanceof \App\Models\Customer ? 'customer' : 'pharmacy';
     return redirect()->route($userType . '.chats.show', $chat->id);
 }
+public function sendOffer(Request $request, $chatId)
+{
+    try {
+        $offerData = $request->validate([
+            'name' => 'required|string',
+            'price' => 'required|numeric',
+            'quantity' => 'required|integer',
+            'total' => 'required|numeric',
+        ]);
+
+        // Find the chat by ID
+        $chat = Chat::findOrFail($chatId);
+        $user = Auth::user();
+
+        // Create a new offer
+        $offer = new Offer();
+        $offer->chat_id = $chatId;
+        $offer->name = $offerData['name'];
+        $offer->price = $offerData['price'];
+        $offer->quantity = $offerData['quantity'];
+        $offer->total = $offerData['total'];
+        $offer->save();
+
+        // Create a new message to send the offer
+        $message = new Message();
+        $message->chat_id = $chatId;
+        $message->sender_id = $user->id;
+        $message->sender_type = get_class($user); // Store the sender type (Customer, pharmacy, etc.)
+        $message->message = "Offer: {$offer->name} | Price: {$offer->price} | Quantity: {$offer->quantity} | Total: {$offer->total}";
+
+        // Add an indicator for a payment button in the message (for customer side)
+        $message->payment_button = true; // This will indicate to the frontend to show the payment button
+
+        $message->save();
+
+        // For real-time update
+        broadcast(new \App\Events\MessageSent($message))->toOthers();
+
+        return response()->json(['message' => 'Offer sent successfully!'], 200);
+    } catch (\Exception $e) {
+        Log::error('Error sending offer: ' . $e->getMessage());
+        return response()->json(['message' => 'Failed to send offer.'], 500);
+    }
+}
+
+
+
+
 }

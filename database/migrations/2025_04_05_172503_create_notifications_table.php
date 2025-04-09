@@ -13,10 +13,16 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pharmacy_id')->constrained('pharmacies')->onDelete('cascade');
-            $table->foreignId('post_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('pharmacy_id');
+            $table->unsignedBigInteger('customer_post_id');
+            $table->unsignedBigInteger('customer_id');
+            $table->text('message')->nullable();
             $table->timestamp('read_at')->nullable();
             $table->timestamps();
+
+            $table->foreign('pharmacy_id')->references('id')->on('pharmacies')->onDelete('cascade');
+            $table->foreign('customer_post_id')->references('id')->on('customer_posts')->onDelete('cascade');
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
         });
     }
 

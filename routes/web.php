@@ -6,9 +6,12 @@ use App\Http\Controllers\Auth\CustomerAuthController;
 use App\Http\Controllers\Auth\PharmacyAuthController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerPostController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PharmacyController;
 use App\Http\Controllers\PharmacyPostController;
 use Illuminate\Support\Facades\Route;
@@ -52,6 +55,17 @@ Route::prefix('pharmacy')->name('pharmacy.')->group(function () {
         Route::get('chats', [ChatController::class, 'index'])->name('chats.index');
         Route::get('chats/{id}', [ChatController::class, 'show'])->name('chats.show');
         Route::post('chats/{id}/message', [ChatController::class, 'storeMessage'])->name('chats.storeMessage');
+
+        Route::get('/posts/{id}', [PharmacyController::class, 'showModal'])->name('posts.show.modal');
+        Route::put('/notifications/{notificationId}/read', [PharmacyController::class, 'markAsRead']);
+        Route::post('/chats/{chat}/send-offer', [ChatController::class, 'sendOffer'])->name('chats.send-offer');
+
+        //orders
+        Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+        Route::put('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
+
+
     });
 });
 
@@ -82,6 +96,17 @@ Route::prefix('customer')->name('customer.')->group(function () {
         Route::post('chats/{id}/message', [ChatController::class, 'storeMessage'])->name('chats.storeMessage');
         Route::get('chats/start/{pharmacy}', [PharmacyController::class, 'startChat'])->name('startChat');
         Route::post('chats/start/{pharmacy}', [PharmacyController::class, 'startChat'])->name('startChat.store');
+        // Route::post('order', [OrderController::class, 'store'])->name('customer.order.store');
+        Route::post('send-medicine-details', [PharmacyController::class, 'sendMedicineDetails'])->name('sendMedicineDetails');
 
+        Route::get('/chats/{chatId}/message/{messageId}/pay', [PaymentController::class, 'showPaymentPage'])->name('pay');
+        Route::post('/chats/{chatId}/message/{messageId}/pay', [PaymentController::class, 'processPayment'])->name('processPayment');
+
+        //orders
+            Route::get('/orders', [OrderController::class, 'customerindex'])->name('orders.index');
+            Route::get('/orders/{order}', [OrderController::class, 'customershow'])->name('orders.show');
+
+        //rating
+        Route::post('/orders/{order}/ratings', [RatingController::class, 'store'])->name('ratings.store');
     });
 });

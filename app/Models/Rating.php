@@ -5,30 +5,30 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Notification extends Model
+class Rating extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'customer_post_id',
+        'pharmacy_id',
         'customer_id',
-        'message',
-        'read_at',
+        'order_id',
+        'rating',
+        'comment'
     ];
-
 
     public function pharmacy()
     {
         return $this->belongsTo(Pharmacy::class);
     }
 
-    public function posts()
-    {
-        return $this->belongsTo(CustomerPost::class);
-    }
-
     public function customer()
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Payment::class, 'order_id');
     }
 }

@@ -8,20 +8,22 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+<body class="min-h-screen bg-cover bg-center flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
+      style="background-image: url('{{ asset('images/customer-background.jpg') }}');">
     <div class="max-w-md w-full">
         <!-- Logo or Company Name Section -->
-        <div class="text-center mb-8">
-            <h2 class="text-3xl font-extrabold text-gray-900">
-                Customer Portal
-            </h2>
-            <p class="mt-2 text-sm text-gray-600">
-                Sign in to access your account
-            </p>
-        </div>
+
 
         <!-- Login Form Card -->
         <div class="bg-white shadow-2xl rounded-lg py-8 px-6 space-y-6">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-extrabold text-gray-900">
+                    Customer Portal
+                </h2>
+                <p class="mt-2 text-sm text-gray-600">
+                    Sign in to access your account
+                </p>
+            </div>
             <form method="POST" action="{{ route('customer.login') }}" class="space-y-6">
                 @csrf
                 <div>
@@ -51,7 +53,10 @@
                                placeholder="Enter your password">
                     </div>
                 </div>
-
+                <a href="{{ route('customer.password.request') }}"
+                class="text-sm font-medium text-blue-600 hover:text-blue-500 transition duration-150 ease-in-out">
+                 Forgot Password?
+             </a>
                 <div>
                     <button type="submit"
                             class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out">

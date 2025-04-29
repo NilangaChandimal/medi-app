@@ -86,13 +86,6 @@
             <input type="hidden" name="paymentIntentId" id="payment-intent-id">
             <input type="hidden" name="amount" id="payment-amount" value="{{ $total ?? 0 }}">
 
-            <!-- Amount Display -->
-            @if(isset($total))
-            <div class="mb-6 text-center">
-                <span class="text-3xl font-bold text-gray-800">${{ number_format($total/100, 2) }}</span>
-            </div>
-            @endif
-
             <!-- Billing Information -->
             <div class="mb-4">
                 <h3 class="text-lg font-medium text-gray-700 mb-3">Billing Information</h3>

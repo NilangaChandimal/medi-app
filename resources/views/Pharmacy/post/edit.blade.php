@@ -3,20 +3,18 @@
 @section('title', 'Edit Post')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-12">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-            <div class="px-6 py-8 md:p-10">
-                <div class="border-b border-gray-200 pb-8 mb-8">
-                    <h1 class="text-3xl font-semibold text-gray-900">Edit Post</h1>
-                    <p class="mt-2 text-gray-600">Update your post content and media</p>
+<div class="max-w-3xl mx-auto px-4 py-8">
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="bg-gradient-to-r from-blue-500 to-indigo-600 px-6 py-4">
+                    <h1 class="text-2xl font-bold text-white flex items-center">Edit Post</h1>
+                    <p class="text-blue-100 mt-1">Update your post content and media</p>
                 </div>
 
                 <form action="{{ route('pharmacy.post.update', $posts->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
-                    <div class="space-y-8">
+                    <div class="space-y-8 p-6">
                         <div>
                             <label for="content" class="block text-sm font-medium text-gray-700 mb-2">Content</label>
                             <textarea
@@ -110,7 +108,7 @@
                                 Cancel
                             </a>
                             <button type="submit"
-                                    class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                                    class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-lg shadow-md hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all">
                                 Update Post
                             </button>
                         </div>

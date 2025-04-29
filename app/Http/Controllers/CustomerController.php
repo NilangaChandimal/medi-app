@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Chat;
 use App\Models\CustomerPost;
+use App\Models\Order;
+use App\Models\Payment;
 use App\Models\Pharmacy;
 use App\Models\PharmacyPost;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
@@ -41,7 +45,18 @@ class CustomerController extends Controller
         ['path' => request()->url(), 'query' => request()->query()]
     );
 
-    return view('customer.home', compact('customer', 'paginatedPosts'));
+    $latestChats = Chat::where('customer_id', auth()->id())
+    ->with(['pharmacy', 'lastMessage']) // eager load related models
+    ->latest('updated_at') // or use 'lastMessage.created_at' if needed
+    ->take(5)
+    ->get();
+
+    $orders = Payment::where('customer_id', auth()->id())
+    ->latest('updated_at') // or use 'lastMessage.created_at' if needed
+    ->take(5) // if you want to limit the number of orders
+    ->get();
+
+    return view('customer.home', compact('customer', 'paginatedPosts', 'latestChats', 'orders'));
 }
 
 public function pharmacy(Request $request)

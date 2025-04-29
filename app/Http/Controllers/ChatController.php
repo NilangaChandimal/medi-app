@@ -111,42 +111,45 @@ class ChatController extends Controller
 public function sendOffer(Request $request, $chatId)
 {
     try {
+        // Validate the incoming request
         $offerData = $request->validate([
-            'name' => 'required|string',
-            'price' => 'required|numeric',
-            'quantity' => 'required|integer',
+            'medicines' => 'required|array',
+            'medicines.*.name' => 'required|string',
+            'medicines.*.price' => 'required|numeric',
+            'medicines.*.quantity' => 'required|integer',
             'total' => 'required|numeric',
         ]);
 
-        // Find the chat by ID
         $chat = Chat::findOrFail($chatId);
         $user = Auth::user();
 
-        // Create a new offer
-        $offer = new Offer();
-        $offer->chat_id = $chatId;
-        $offer->name = $offerData['name'];
-        $offer->price = $offerData['price'];
-        $offer->quantity = $offerData['quantity'];
-        $offer->total = $offerData['total'];
-        $offer->save();
+        // Build message content
+        $messageContent = "🧾 Medicine Offer:\n";
+        foreach ($offerData['medicines'] as $index => $medicine) {
+            $name = $medicine['name'];
+            $price = number_format($medicine['price'], 2);
+            $quantity = $medicine['quantity'];
+            $subtotal = number_format($medicine['price'] * $quantity, 2);
 
-        // Create a new message to send the offer
+            $messageContent .= ($index + 1) . ". {$name} - \${$price} x {$quantity} = \${$subtotal}\n";
+        }
+
+        $messageContent .= "\n💰 Total Offer Total: " . number_format($offerData['total'], 2, '.', '');
+
+        // Save the message
         $message = new Message();
         $message->chat_id = $chatId;
         $message->sender_id = $user->id;
-        $message->sender_type = get_class($user); // Store the sender type (Customer, pharmacy, etc.)
-        $message->message = "Offer: {$offer->name} | Price: {$offer->price} | Quantity: {$offer->quantity} | Total: {$offer->total}";
-
-        // Add an indicator for a payment button in the message (for customer side)
-        $message->payment_button = true; // This will indicate to the frontend to show the payment button
-
+        $message->sender_type = get_class($user);
+        $message->message = $messageContent;
+        $message->payment_button = true;
         $message->save();
 
-        // For real-time update
+        // Optionally broadcast the message
         broadcast(new \App\Events\MessageSent($message))->toOthers();
 
         return response()->json(['message' => 'Offer sent successfully!'], 200);
+
     } catch (\Exception $e) {
         Log::error('Error sending offer: ' . $e->getMessage());
         return response()->json(['message' => 'Failed to send offer.'], 500);

@@ -290,14 +290,14 @@
 
                                 {{-- Pay Now Button INSIDE bubble --}}
                                 @if ($message->payment_button && get_class(Auth::user()) === 'App\\Models\\Customer')
-    <a href="{{ route('customer.pay', [
-        'chatId' => $chat->id,
-        'messageId' => $message->id,
-    ]) }}?total={{ number_format($message->total, 2, '.', '') }}"
-       class="mt-3 inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1 px-3 rounded text-sm">
-        Pay Now - ${{ number_format($message->total, 2) }}
-    </a>
-@endif
+                                    <a href="{{ route('customer.pay', [
+                                        'chatId' => $chat->id,
+                                        'messageId' => $message->id,
+                                    ]) }}?total={{ number_format($message->total, 2, '.', '') }}"
+                                        class="mt-3 inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1 px-3 rounded text-sm">
+                                        Pay Now - ${{ number_format($message->total, 2) }}
+                                    </a>
+                                @endif
 
                                 {{-- Timestamp --}}
                                 <span class="message-timestamp block mt-1">
@@ -378,39 +378,30 @@
                     </form>
                     <!-- Add this modal at the bottom of the content -->
                     <div id="offer-modal" class="modal">
-                        <div class="bg-white rounded-xl p-6 w-96 mx-auto mt-20">
+                        <div class="bg-white rounded-xl p-6 w-full max-w-xl mx-auto mt-20">
                             <h3 class="text-xl font-semibold mb-4">Send Medicine Offer</h3>
+
                             <form id="offer-form">
-                                <div class="space-y-4">
-                                    <div>
-                                        <label class="block text-sm font-medium mb-1">Medicine Name</label>
-                                        <input type="text" id="medicine-name" required
-                                            class="w-full px-3 py-2 border rounded-lg">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium mb-1">Price per Unit</label>
-                                        <input type="number" id="medicine-price" required step="0.01"
-                                            class="w-full px-3 py-2 border rounded-lg">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium mb-1">Quantity</label>
-                                        <input type="number" id="medicine-quantity" required
-                                            class="w-full px-3 py-2 border rounded-lg">
-                                    </div>
-                                    <div class="font-semibold text-lg">
-                                        Total: $<span id="offer-total">0.00</span>
-                                    </div>
-                                    <div class="flex justify-end space-x-3">
-                                        <button type="button" onclick="closeOfferModal()"
-                                            class="modal-button">Cancel</button>
-                                        <button type="submit" class="modal-button">
-                                            Send Offer
-                                        </button>
-                                    </div>
+                                <div id="medicine-items" class="space-y-4">
+                                    <!-- Single item row template will be inserted here -->
+                                </div>
+
+                                <button type="button" onclick="addMedicineRow()"
+                                    class="text-sm text-blue-600 hover:underline my-2">+ Add another medicine</button>
+
+                                <div class="font-semibold text-lg mt-4">
+                                    Total: $<span id="offer-total">0.00</span>
+                                </div>
+
+                                <div class="flex justify-end space-x-3 mt-6">
+                                    <button type="button" onclick="closeOfferModal()"
+                                        class="modal-button">Cancel</button>
+                                    <button type="submit" class="modal-button">Send Offer</button>
                                 </div>
                             </form>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -616,9 +607,12 @@
         const chatId = "{{ $chat->id }}";
 
         // Offer functionality
-        document.getElementById('offer-button').addEventListener('click', openOfferModal);
-        document.getElementById('offer-form').addEventListener('submit', handleOfferSubmit);
-        console.log('Handle offer submit function called');
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('offer-button').addEventListener('click', openOfferModal);
+            document.getElementById('offer-form').addEventListener('submit', handleOfferSubmit);
+
+            addMedicineRow(); // Add initial row
+        });
 
         function openOfferModal() {
             document.getElementById('offer-modal').style.display = 'block';
@@ -627,26 +621,85 @@
 
         function closeOfferModal() {
             document.getElementById('offer-modal').classList.remove('visible');
-            setTimeout(() => document.getElementById('offer-modal').style.display = 'none', 300);
+            setTimeout(() => {
+                document.getElementById('offer-modal').style.display = 'none';
+                document.getElementById('medicine-items').innerHTML = ''; // Clear form rows
+                addMedicineRow(); // Add one fresh row on reopen
+                document.getElementById('offer-total').textContent = '0.00';
+            }, 300);
         }
 
-        // Calculate total
-        document.getElementById('medicine-price').addEventListener('input', calculateTotal);
-        document.getElementById('medicine-quantity').addEventListener('input', calculateTotal);
+        function addMedicineRow() {
+            const container = document.getElementById('medicine-items');
+
+            const row = document.createElement('div');
+            row.classList.add('medicine-row', 'flex', 'space-x-2', 'items-end');
+
+            row.innerHTML = `
+            <div class="flex-1">
+                <label class="block text-sm font-medium mb-1">Medicine Name</label>
+                <input type="text" name="medicines[][name]" required class="w-full px-3 py-2 border rounded-lg" />
+            </div>
+            <div class="w-32">
+                <label class="block text-sm font-medium mb-1">Price</label>
+                <input type="number" name="medicines[][price]" step="0.01" required class="w-full px-3 py-2 border rounded-lg" />
+            </div>
+            <div class="w-28">
+                <label class="block text-sm font-medium mb-1">Qty</label>
+                <input type="number" name="medicines[][quantity]" required class="w-full px-3 py-2 border rounded-lg" />
+            </div>
+            <button type="button" onclick="removeMedicineRow(this)" class="text-red-600 text-sm hover:underline">Remove</button>
+        `;
+
+            container.appendChild(row);
+
+            // Bind input events for price and quantity to recalculate total
+            row.querySelectorAll('input').forEach(input => {
+                input.addEventListener('input', calculateTotal);
+            });
+        }
+
+        function removeMedicineRow(button) {
+            const row = button.closest('.medicine-row');
+            row.remove();
+            calculateTotal();
+        }
 
         function calculateTotal() {
-            const price = parseFloat(document.getElementById('medicine-price').value) || 0;
-            const quantity = parseFloat(document.getElementById('medicine-quantity').value) || 0;
-            document.getElementById('offer-total').textContent = (price * quantity).toFixed(2);
+            const rows = document.querySelectorAll('.medicine-row');
+            let total = 0;
+
+            rows.forEach(row => {
+                const price = parseFloat(row.querySelector('[name$="[price]"]').value) || 0;
+                const qty = parseFloat(row.querySelector('[name$="[quantity]"]').value) || 0;
+                total += price * qty;
+            });
+
+            document.getElementById('offer-total').textContent = total.toFixed(2);
         }
 
         async function handleOfferSubmit(e) {
             e.preventDefault();
+            console.log('Submitting offer...');
+            const rows = document.querySelectorAll('.medicine-row');
+            const medicines = [];
+
+            rows.forEach(row => {
+                const name = row.querySelector('[name$="[name]"]').value;
+                const price = parseFloat(row.querySelector('[name$="[price]"]').value);
+                const quantity = parseInt(row.querySelector('[name$="[quantity]"]').value);
+
+                if (name && price && quantity) {
+                    medicines.push({
+                        name,
+                        price,
+                        quantity
+                    });
+                }
+            });
 
             const offerData = {
-                name: document.getElementById('medicine-name').value,
-                price: document.getElementById('medicine-price').value,
-                quantity: document.getElementById('medicine-quantity').value,
+                medicines,
                 total: document.getElementById('offer-total').textContent
             };
 
@@ -663,37 +716,32 @@
                 const data = await response.json();
 
                 if (response.ok && data.message === 'Offer sent successfully!') {
-                    // Append the offer message to the chat
                     const messageContainer = document.querySelector('.chat-container');
                     const newMessage = document.createElement('div');
                     newMessage.classList.add('message');
-                    newMessage.innerHTML = `
-                <strong>Pharmacy:</strong> Offer: ${offerData.name} | Price: $${offerData.price} | Quantity: ${offerData.quantity} | Total: $${offerData.total}
-            `;
 
-                    // If the message has a payment button, add a payment button
+                    let medicineListHtml = offerData.medicines.map(
+                        med => `${med.name} ($${med.price} × ${med.quantity})`
+                    ).join(', ');
+
+                    newMessage.innerHTML = `
+                    <strong>Pharmacy:</strong> Offer: ${medicineListHtml} | Total: $${offerData.total}
+                `;
+
                     if (data.payment_button) {
                         const paymentButton = document.createElement('button');
                         paymentButton.textContent = 'Proceed to Payment';
                         paymentButton.classList.add('payment-button');
                         paymentButton.addEventListener('click', () => {
-                            // Trigger payment flow
                             window.location.href = `/chats/${chatId}/message/${data.message_id}/pay`;
-
-
                         });
                         newMessage.appendChild(paymentButton);
                     }
 
                     messageContainer.appendChild(newMessage);
-
-                    // Optionally scroll to the bottom of the chat
                     messageContainer.scrollTop = messageContainer.scrollHeight;
 
-                    // Reset the offer form
                     closeOfferModal();
-                    document.getElementById('offer-form').reset();
-                    document.getElementById('offer-total').textContent = '0.00';
                 }
             } catch (error) {
                 console.error('Error sending offer:', error);

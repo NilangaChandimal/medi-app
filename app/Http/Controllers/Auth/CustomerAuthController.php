@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class CustomerAuthController extends Controller
 {
@@ -85,4 +87,43 @@ class CustomerAuthController extends Controller
         $request->session()->regenerateToken();
         return redirect()->route('customer.login');
     }
+
+    public function edit()
+{
+    return view('customer.profile.edit', ['customer' => auth()->user()]);
+}
+
+public function update(Request $request)
+{
+    $customer = auth()->user();
+
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:customers,email,'.$customer->id,
+        'phone' => 'required|string',
+        'address' => 'required|string',
+        'city' => 'required|string',
+        'password' => 'nullable|string|min:8|confirmed',
+        'profile_image' => 'nullable|image|max:2048',
+    ]);
+
+    // Handle profile image
+    if ($request->hasFile('profile_image')) {
+        if ($customer->profile_image) {
+            Storage::delete($customer->profile_image);
+        }
+        $validated['profile_image'] = $request->file('profile_image')->store('customer-profile');
+    }
+
+    // Update password if provided
+    if (!empty($validated['password'])) {
+        $validated['password'] = Hash::make($validated['password']);
+    } else {
+        unset($validated['password']);
+    }
+
+    $customer->update($validated);
+
+    return redirect()->route('customer.profile.edit')->with('success', 'Profile updated successfully');
+}
 }

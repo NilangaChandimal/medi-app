@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Chat;
 use App\Models\CustomerPost;
 use App\Models\Notification;
+use App\Models\Payment;
 use App\Models\Pharmacy;
 use App\Models\PharmacyPost;
 use Carbon\Carbon;
@@ -65,7 +66,24 @@ class PharmacyController extends Controller
             ->take(10)
             ->get();
 
-        return view('pharmacy.home', compact('pharmacy', 'paginatedPosts', 'chats', 'userType', 'notifications'));
+            $latestChats = Chat::where('pharmacy_id', auth()->id())
+    ->with(['customer', 'lastMessage']) // eager load related models
+    ->latest('updated_at') // or use 'lastMessage.created_at' if needed
+    ->take(5)
+    ->get();
+
+    $pharmacyId = auth()->id(); // assuming pharmacy is authenticated using default guard
+    $payments = Payment::whereHas('chat', function ($query) use ($pharmacyId) {
+        $query->where('pharmacy_id', $pharmacyId);
+    })
+    ->with(['chat.customer']) // eager load to avoid N+1 issues
+    ->latest()
+    ->take(5) // or paginate if needed
+    ->get();
+
+
+
+        return view('pharmacy.home', compact('pharmacy', 'paginatedPosts', 'chats', 'userType', 'notifications', 'latestChats', 'payments'));
     }
 
     public function showModal($id)

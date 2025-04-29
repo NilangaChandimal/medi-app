@@ -127,6 +127,26 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+
+        'customers' => [ // Add this
+        'provider' => 'customers', // Ensure you have 'customers' provider below
+        'table' => 'customer_password_reset_tokens',
+        'expire' => 60,
+        'throttle' => 60,
+    ],
+        'pharmacies' => [ // Add this
+            'provider' => 'pharmacies', // Ensure you have 'pharmacies' provider below
+            'table' => 'pharmacy_password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'admins' => [ // Add this
+            'provider' => 'admins', // Ensure you have 'admins' provider
+            'table' => 'admin_password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
     ],
 
     /*

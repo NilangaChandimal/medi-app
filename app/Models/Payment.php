@@ -88,4 +88,7 @@ class Payment extends Model
     public function rating(){
         return $this->hasOne(Rating::class, 'order_id');
     }
+    public function pharmacy(){
+        return $this->belongsTo(Pharmacy::class);
+    }
 }

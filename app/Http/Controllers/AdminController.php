@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Chat;
 use App\Models\Customer;
 use App\Models\CustomerPost;
+use App\Models\Payment;
 use App\Models\Pharmacy;
 use App\Models\PharmacyPost;
 use App\Models\User;
@@ -165,6 +166,16 @@ public function pharmacystatus()
 
         return view('admin.customers.show', compact('customers', 'search'));
     }
+
+    public function payments(){
+        $payments = Payment::with(['customer', 'pharmacy', 'chat.customer', 'message'])->paginate(10);
+        return view('admin.payments.index', compact('payments'));
+    }
+    public function show(Payment $payment)
+{
+    return view('admin.payments.show', compact('payment'));
+}
+
 
     // public function chatdestroy(Chat $chat)
     // {

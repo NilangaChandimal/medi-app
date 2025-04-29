@@ -7,16 +7,18 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+<body class="min-h-screen bg-cover bg-center flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
+      style="background-image: url('{{ asset('images/customer-background.jpg') }}');">
     <div class="max-w-2xl mx-auto">
         <!-- Header Section -->
-        <div class="text-center mb-8">
-            <h2 class="text-3xl font-extrabold text-gray-900">Create Your Account</h2>
-            <p class="mt-2 text-sm text-gray-600">Join our professional network</p>
-        </div>
+
 
         <!-- Registration Form Card -->
         <div class="bg-white shadow-2xl rounded-lg py-8 px-6">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-extrabold text-gray-900">Create Your Account</h2>
+                <p class="mt-2 text-sm text-gray-600">Join our professional network</p>
+            </div>
             <form method="POST" action="{{ route('pharmacy.register') }}" enctype="multipart/form-data" class="space-y-6">
                 @csrf
 

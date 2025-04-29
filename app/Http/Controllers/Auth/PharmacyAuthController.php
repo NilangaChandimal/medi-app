@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Pharmacy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class PharmacyAuthController extends Controller
 {
@@ -97,4 +99,51 @@ class PharmacyAuthController extends Controller
         $request->session()->regenerateToken();
         return redirect()->route('pharmacy.login');
     }
+
+    public function edit()
+{
+    return view('pharmacy.profile.edit', ['pharmacy' => auth()->user()]);
+}
+
+public function update(Request $request)
+{
+    $pharmacy = auth()->user();
+
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:pharmacies,email,'.$pharmacy->id,
+        'phone' => 'required|string',
+        'address' => 'required|string',
+        'city' => 'required|string',
+        'password' => 'nullable|string|min:8|confirmed',
+        'profile_image' => 'nullable|image|max:2048',
+        'old_password' => [
+            'nullable',
+            function ($attribute, $value, $fail) use ($pharmacy) {
+                if (!Hash::check($value, $pharmacy->password)) {
+                    $fail('The old password is incorrect.');
+                }
+            },
+        ],
+    ]);
+
+    // Handle profile image
+    if ($request->hasFile('profile_image')) {
+        if ($pharmacy->profile_image) {
+            Storage::delete($pharmacy->profile_image);
+        }
+        $validated['profile_image'] = $request->file('profile_image')->store('pharmacy-profile');
+    }
+    unset($validated['old_password']);
+    // Update password if provided
+    if (!empty($validated['password'])) {
+        $validated['password'] = Hash::make($validated['password']);
+    } else {
+        unset($validated['password']);
+    }
+
+    $pharmacy->update($validated);
+
+    return redirect()->route('pharmacy.profile.edit')->with('success', 'Profile updated successfully');
+}
 }

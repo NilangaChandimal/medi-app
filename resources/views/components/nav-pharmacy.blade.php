@@ -1,7 +1,8 @@
 <nav class="bg-gray-800 p-4">
     <div class="container mx-auto flex justify-between items-center">
         <a href="{{ route('pharmacy.home') }}" class="text-white font-bold">Pharmacy Dashboard
-            {{ Auth::user()->name }}</a>
+            {{-- {{ Auth::user()->name }} --}}
+        </a>
         <div class="flex space-x-4">
             <a href="{{ route('pharmacy.orders.index') }}" class="text-gray-300 hover:text-white">Orders</a>
             <a href="{{ route('pharmacy.post.index') }}" class="text-gray-300 hover:text-white">Post</a>
@@ -16,7 +17,7 @@
                 <span class="absolute top-0 right-0 inline-block w-2 h-2 bg-red-600 rounded-full"></span>
             </button>
             <a href="{{ route('pharmacy.contact.create') }}" class="text-gray-300 hover:text-white">Contact Admin</a>
-            {{-- <a href="{{ route('worker.profile') }}" class="text-gray-300 hover:text-white">Profile</a> --}}
+            <a href="{{ route('pharmacy.profile.edit') }}" class="text-gray-300 hover:text-white">Profile</a>
             <a href="{{ route('pharmacy.logout') }}" class="text-gray-300 hover:text-white">Logout</a>
         </div>
     </div>

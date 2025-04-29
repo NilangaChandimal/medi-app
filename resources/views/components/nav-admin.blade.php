@@ -7,7 +7,8 @@
             <a href="{{ route('admin.pharmacies.index') }}" class="text-gray-300 hover:text-white">Pharmacy Checkup</a>
             <a href="{{ route('admin.users.index') }}" class="text-gray-300 hover:text-white">Service Management</a>
             <a href="{{ route('admin.chats.index') }}" class="text-gray-300 hover:text-white">Chat</a>
-            {{-- <a href="{{ route('admin.profile') }}" class="text-gray-300 hover:text-white">Settings</a> --}}
+            <a href="{{ route('admin.payments.index') }}" class="text-gray-300 hover:text-white">Payments</a>
+            <a href="{{ route('admin.profile.edit') }}" class="text-gray-300 hover:text-white">Profile</a>
             <a href="{{ route('admin.logout') }}" class="text-gray-300 hover:text-white">Logout</a>
         </div>
     </div>

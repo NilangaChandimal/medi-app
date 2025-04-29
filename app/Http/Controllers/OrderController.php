@@ -88,9 +88,10 @@ public function customerindex()
             ->where('customer_id', auth()->id())
             ->firstOrFail();
 
-        $orderDetails = $this->customerparseOrderDetails(
-            optional($order->message)->message ?? ''
-        );
+            $orderDetails = $order->message
+            ? $this->customerparseOrderDetails($order->message->message)
+            : ['medicines' => [], 'total' => null];
+
 
         return view('customer.orders.show', [
             'order' => $order,
@@ -100,17 +101,34 @@ public function customerindex()
     }
 
     private function customerparseOrderDetails($message)
-    {
-        $pattern = '/Offer:\s*(.+?)\s*\|\s*Price:\s*(\d+\.?\d*)\s*\|\s*Quantity:\s*(\d+)\s*\|\s*Total:\s*(\d+\.?\d*)/i';
-        preg_match($pattern, $message, $matches);
+{
+    $lines = explode("\n", $message);
+    $medicines = [];
+    $total = null;
 
-        return [
-            'medicine' => $matches[1] ?? 'Unknown Medicine',
-            'price' => (float)($matches[2] ?? 0),
-            'quantity' => (int)($matches[3] ?? 0),
-            'total' => (float)($matches[4] ?? 0)
-        ];
+    foreach ($lines as $line) {
+        // Match lines like: "1. ddgdf - $23.00 x 2 = $46.00"
+        if (preg_match('/^\d+\.\s+(.*?)\s+-\s+\$(\d{1,3}(?:,\d{3})*(?:\.\d{2})?)\s+x\s+(\d+)\s+=\s+\$(\d{1,3}(?:,\d{3})*(?:\.\d{2})?)$/', trim($line), $matches)) {
+            $medicines[] = [
+                'name' => $matches[1],
+                'price' => (float) str_replace(',', '', $matches[2]),
+                'quantity' => (int) $matches[3],
+                'subtotal' => (float) str_replace(',', '', $matches[4]),
+            ];
+        }
+
+        // Match the total line: "💰 Total Offer Total: 1651.00"
+        if (preg_match('/Total Offer Total:\s*(\d+(?:\.\d{2})?)/', $line, $match)) {
+            $total = (float) $match[1];
+        }
     }
+
+    return [
+        'medicines' => $medicines,
+        'total' => $total,
+    ];
+}
+
 
 //     public function store(Request $request)
 // {

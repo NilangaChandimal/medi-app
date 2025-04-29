@@ -15,7 +15,18 @@
                     <h1 class="text-3xl font-bold text-gray-800">Admin Login</h1>
                     <p class="text-gray-600 mt-2">Welcome back! Please enter your credentials.</p>
                 </div>
-
+                @if ($errors->any())
+                <div class="bg-red-500 text-white p-3 rounded mb-4">
+                    @foreach ($errors->all() as $error)
+                        <p>{{ $error }}</p>
+                    @endforeach
+                </div>
+            @endif
+                @if (session('success'))
+                    <div class="mb-4 p-4 bg-green-100 text-green-700 rounded">
+                        {{ session('success') }}
+                    </div>
+                @endif
                 <form method="POST" action="{{ route('admin.login') }}" class="space-y-6">
                     @csrf
                     <div>
@@ -49,7 +60,7 @@
                                    class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
                             <label for="remember_me" class="ml-2 block text-sm text-gray-700">Remember me</label>
                         </div>
-                        <a href=""
+                        <a href="{{ route('admin.password.request') }}"
                            class="text-sm font-medium text-blue-600 hover:text-blue-500 transition duration-150 ease-in-out">
                             Forgot Password?
                         </a>

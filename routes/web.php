@@ -3,8 +3,14 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminSupportController;
 use App\Http\Controllers\Auth\AdminAuthController;
+use App\Http\Controllers\Auth\AdminForgotPasswordController;
+use App\Http\Controllers\Auth\AdminResetPasswordController;
 use App\Http\Controllers\Auth\CustomerAuthController;
+use App\Http\Controllers\Auth\CustomerForgotPasswordController;
+use App\Http\Controllers\Auth\CustomerResetPasswordController;
 use App\Http\Controllers\Auth\PharmacyAuthController;
+use App\Http\Controllers\Auth\PharmacyForgotPasswordController;
+use App\Http\Controllers\Auth\PharmacyResetPasswordController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ContactController;
@@ -27,6 +33,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('login', [AdminAuthController::class, 'login']);
     Route::get('register', [AdminAuthController::class, 'showRegistrationForm'])->name('register');
     Route::post('register', [AdminAuthController::class, 'register']);
+
+    Route::get('/password/reset', [AdminForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+    Route::post('/password/email', [AdminForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::get('/password/reset/{token}', [AdminResetPasswordController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/password/reset', [AdminResetPasswordController::class, 'reset'])->name('password.update');
+
     Route::middleware('auth:admin')->group(function () {
         Route::get('home', [AdminController::class, 'index'])->name('home');
         Route::get('/statistics/details/{month}', [AdminController::class, 'statisticsDetails'])->name('statistics.details');
@@ -56,6 +68,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/admin/support-tickets/{ticket}', [AdminSupportController::class, 'show'])->name('support.show');
         Route::put('/admin/support-tickets/{ticket}', [AdminSupportController::class, 'update'])->name('support.update');
 
+        //payments
+        Route::get('/payments', [AdminController::class, 'payments'])->name('payments.index');
+        Route::get('/payments/{payment}', [AdminController::class, 'show'])->name('payments.show');
+
+        //profile
+        Route::get('/profile', [AdminAuthController::class, 'edit'])->name('profile.edit');
+        Route::put('/profile', [AdminAuthController::class, 'update'])->name('profile.update');
     });
 });
 
@@ -65,6 +84,12 @@ Route::prefix('pharmacy')->name('pharmacy.')->group(function () {
     Route::post('login', [PharmacyAuthController::class, 'login']);
     Route::get('register', [PharmacyAuthController::class, 'showRegistrationForm'])->name('register');
     Route::post('register', [PharmacyAuthController::class, 'register']);
+
+    Route::get('/password/reset', [PharmacyForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+    Route::post('/password/email', [PharmacyForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::get('/password/reset/{token}', [PharmacyResetPasswordController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/password/reset', [PharmacyResetPasswordController::class, 'reset'])->name('password.update');
+
     Route::middleware('auth:pharmacy')->group(function () {
         Route::get('home', [PharmacyController::class, 'index'])->name('home');
         Route::get('logout', [PharmacyAuthController::class, 'logout'])->name('logout');
@@ -96,6 +121,9 @@ Route::prefix('pharmacy')->name('pharmacy.')->group(function () {
         Route::get('/contact-admin', [ContactController::class, 'create'])->name('contact.create');
         Route::post('/contact-admin', [ContactController::class, 'store'])->name('contact.store');
 
+        //profile
+        Route::get('/profile', [PharmacyAuthController::class, 'edit'])->name('profile.edit');
+        Route::put('/profile', [PharmacyAuthController::class, 'update'])->name('profile.update');
     });
 });
 
@@ -105,6 +133,12 @@ Route::prefix('customer')->name('customer.')->group(function () {
     Route::post('login', [CustomerAuthController::class, 'login']);
     Route::get('register', [CustomerAuthController::class, 'showRegistrationForm'])->name('register');
     Route::post('register', [CustomerAuthController::class, 'register']);
+
+    Route::get('/password/reset', [CustomerForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+    Route::post('/password/email', [CustomerForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::get('/password/reset/{token}', [CustomerResetPasswordController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/password/reset', [CustomerResetPasswordController::class, 'reset'])->name('password.update');
+
     Route::middleware('auth:customer')->group(function () {
         Route::get('home', [CustomerController::class, 'index'])->name('home');
         Route::get('logout', [CustomerAuthController::class, 'logout'])->name('logout');
@@ -142,5 +176,9 @@ Route::prefix('customer')->name('customer.')->group(function () {
         //support
         Route::get('/contact-admin', [ContactController::class, 'create'])->name('contact.create');
         Route::post('/contact-admin', [ContactController::class, 'store'])->name('contact.store');
+
+        //profile
+        Route::get('/profile', [CustomerAuthController::class, 'edit'])->name('profile.edit');
+        Route::put('/profile', [CustomerAuthController::class, 'update'])->name('profile.update');
     });
 });

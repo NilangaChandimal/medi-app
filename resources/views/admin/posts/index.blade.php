@@ -6,8 +6,19 @@
     <div class="container mx-auto px-4 py-8 bg-gray-50">
         <!-- Page Header -->
         <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-800">Post Management</h1>
-            <p class="text-gray-600 mt-1">Manage and moderate user-generated content</p>
+            <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg shadow-lg p-6 text-white">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-3xl font-bold">Post Management</h1>
+                        <p class="text-indigo-100 mt-2">Manage and moderate user-generated content</p>
+                    </div>
+                    <div class="hidden md:block">
+                        <!-- Font Awesome Post Icon -->
+                        <i class="fa fa-newspaper text-white opacity-60 text-5xl"></i>
+                    </div>
+                </div>
+            </div>
+
 
             <div class="flex mt-4 space-x-2">
                 <a href="#customer-posts"

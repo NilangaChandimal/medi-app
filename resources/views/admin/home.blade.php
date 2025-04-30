@@ -6,9 +6,21 @@
 <div class="container mx-auto px-4 py-8 bg-gray-50 min-h-screen">
     <!-- Dashboard Header -->
     <div class="mb-6">
-        <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Admin Dashboard</h1>
-        <p class="text-gray-600 mt-1">Welcome back! Here's your pharmacy management overview</p>
+        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg shadow-lg p-6 text-white">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold">Admin Dashboard</h1>
+                    <p class="text-indigo-100 mt-2">Welcome back! Here's your pharmacy management overview</p>
+                </div>
+                <div class="hidden md:block">
+                    <!-- Font Awesome Dashboard Icon -->
+                    <i class="fa fa-tachometer-alt text-white opacity-60 text-5xl"></i>
+                </div>
+            </div>
+        </div>
     </div>
+
+
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <!-- Customer Statistics Card -->

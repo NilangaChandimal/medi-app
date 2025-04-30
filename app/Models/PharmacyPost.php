@@ -25,4 +25,12 @@ class PharmacyPost extends Model
     {
         return $this->belongsToMany(Customer::class);
     }
+    public function messages()
+    {
+        return $this->belongsToMany(Message::class);
+    }
+    public function chats()
+    {
+        return $this->belongsToMany(Chat::class);
+    }
 }

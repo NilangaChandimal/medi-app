@@ -29,4 +29,16 @@ class Message extends Model
     preg_match('/Total: (\d+\.?\d*)/', $this->message, $matches);
     return isset($matches[1]) ? (float)$matches[1] : 0;
 }
+public function chats()
+    {
+        return $this->belongsToMany(Chat::class);
+    }
+    public function pharmacies()
+    {
+        return $this->belongsToMany(Pharmacy::class);
+    }
+    public function payments()
+    {
+        return $this->belongsToMany(Payment::class);
+    }
 }

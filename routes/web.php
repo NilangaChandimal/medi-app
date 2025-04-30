@@ -51,6 +51,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // pharmacy status
         Route::get('/pharmacies', [AdminController::class, 'pharmacystatus'])->name('pharmacies.index');
         Route::post('/pharmacies/{pharmacy}/toggle-status', [AdminController::class, 'toggleStatus'])->name('pharmacies.toggle-status');
+        Route::get('/pharmacies/{pharmacy}/show', [AdminController::class, 'pharmacyshow'])->name('pharmacies.show');
 
         Route::get('/customers', [AdminController::class, 'customerstatus'])->name('customers.show');
 

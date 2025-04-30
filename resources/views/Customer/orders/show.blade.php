@@ -6,7 +6,7 @@
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
         <!-- Header with gradient background -->
-        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-4">
+        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4">
             <div class="flex justify-between items-center">
                 <h2 class="text-2xl font-bold text-white">Order #{{ $order->id }}</h2>
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-white text-indigo-700">
@@ -87,7 +87,7 @@
                             </div>
                             <div>
                                 <p class="text-xs text-gray-500 uppercase">Unit Price</p>
-                                <p class="font-semibold text-gray-700">${{ number_format($medicine['price'], 2) }}</p>
+                                <p class="font-semibold text-gray-700">Rs.{{ number_format($medicine['price'], 2) }}</p>
                             </div>
                             <div>
                                 <p class="text-xs text-gray-500 uppercase">Quantity</p>
@@ -95,7 +95,7 @@
                             </div>
                             <div>
                                 <p class="text-xs text-gray-500 uppercase">Subtotal</p>
-                                <p class="font-semibold text-gray-700">${{ number_format($medicine['subtotal'], 2) }}</p>
+                                <p class="font-semibold text-gray-700">Rs.{{ number_format($medicine['subtotal'], 2) }}</p>
                             </div>
                         </div>
                     @endforeach
@@ -103,7 +103,7 @@
                     <div class="flex justify-between items-center p-4 bg-white rounded-lg shadow-sm border-l-4 border-purple-500">
                         <p class="text-lg font-medium text-gray-700">Total Paid</p>
                         <p class="text-xl font-bold text-purple-700">
-                            ${{ number_format($orderDetails['total'] ?? $order->amount, 2) }}
+                            Rs.{{ number_format($orderDetails['total'] ?? $order->amount, 2) }}
                         </p>
                     </div>
                 </div>

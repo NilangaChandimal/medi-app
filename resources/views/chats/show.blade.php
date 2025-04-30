@@ -295,7 +295,7 @@
                                         'messageId' => $message->id,
                                     ]) }}?total={{ number_format($message->total, 2, '.', '') }}"
                                         class="mt-3 inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1 px-3 rounded text-sm">
-                                        Pay Now - ${{ number_format($message->total, 2) }}
+                                        Pay Now - Rs.{{ number_format($message->total, 2) }}
                                     </a>
                                 @endif
 
@@ -331,12 +331,18 @@
                             @if ($userType === 'pharmacy')
                                 <button type="button" id="offer-button"
                                     class="chat-button p-2 hover:bg-gray-100 rounded-full">
-                                    <svg class="h-6 w-6 text-indigo-600" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor">
-                                        <path d="M17.5 9.5l-5 5-5-5M12 4v16m-4-8H3m18 0h-5" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M9 4H15C16.1 4 17 4.9 17 6V20L15 19L13 20L11 19L9 20L7 19L5 20V6C5 4.9 5.9 4 7 4H9Z" />
+
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 9H16" />
+
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 13H14" />
                                     </svg>
                                 </button>
                             @endif
+
 
                             <input type="file" name="file" id="file-input" class="hidden" accept="image/*">
                             <label for="file-input" class="chat-button p-2 hover:bg-gray-100 rounded-full cursor-pointer">
@@ -376,32 +382,30 @@
                             </button>
                         </div>
                     </form>
-                    <!-- Add this modal at the bottom of the content -->
+                    
                     <div id="offer-modal" class="modal">
                         <div class="bg-white rounded-xl p-6 w-full max-w-xl mx-auto mt-20">
-                            <h3 class="text-xl font-semibold mb-4">Send Medicine Offer</h3>
+                            <h3 class="text-xl font-semibold mb-4">Medicine Bill</h3>
 
                             <form id="offer-form">
-                                <div id="medicine-items" class="space-y-4">
-                                    <!-- Single item row template will be inserted here -->
+                                <div id="medicine-items" class="space-y-4 max-h-64 overflow-y-auto">
                                 </div>
 
                                 <button type="button" onclick="addMedicineRow()"
                                     class="text-sm text-blue-600 hover:underline my-2">+ Add another medicine</button>
 
                                 <div class="font-semibold text-lg mt-4">
-                                    Total: $<span id="offer-total">0.00</span>
+                                    Total: Rs.<span id="offer-total">0.00</span>
                                 </div>
 
                                 <div class="flex justify-end space-x-3 mt-6">
                                     <button type="button" onclick="closeOfferModal()"
                                         class="modal-button">Cancel</button>
-                                    <button type="submit" class="modal-button">Send Offer</button>
+                                    <button type="submit" class="modal-button">Send Bill</button>
                                 </div>
                             </form>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

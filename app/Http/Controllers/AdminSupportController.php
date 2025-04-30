@@ -8,14 +8,21 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminSupportController extends Controller
 {
-    public function index()
-    {
-        $tickets = SupportTicket::with(['user', 'admin'])
-            ->latest()
-            ->paginate(10);
+    public function index(Request $request)
+{
+    $status = $request->input('status');
 
-        return view('admin.support.index', compact('tickets'));
+    $query = SupportTicket::with(['user', 'admin'])->latest();
+
+    if ($status && in_array($status, ['Open', 'Answered', 'Closed'])) {
+        $query->where('status', $status);
     }
+
+    $tickets = $query->paginate(10);
+
+    return view('admin.support.index', compact('tickets', 'status'));
+}
+
 
     public function show(SupportTicket $ticket)
     {

@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Chat;
 use App\Models\Customer;
 use App\Models\CustomerPost;
+use App\Models\Message;
 use App\Models\Payment;
 use App\Models\Pharmacy;
 use App\Models\PharmacyPost;
@@ -17,7 +18,6 @@ class AdminController extends Controller
 {
     public function index()
 {
-
     $customerCount = Customer::count();
     $pharmacyCount = Pharmacy::count();
 
@@ -39,15 +39,91 @@ class AdminController extends Controller
             ->count();
     }
 
-    // Get the currently authenticated admin
-    $admin = auth()->guard('admin')->user(); // Use the 'admin' guard
+    // Get total amount paid to each pharmacy
+    $pharmacyAmounts = Pharmacy::all()->map(function ($pharmacy) {
+        // Get all chat IDs where this pharmacy is the sender
+        $chatIds = Message::where('sender_type', Pharmacy::class)
+            ->where('sender_id', $pharmacy->id)
+            ->pluck('chat_id')
+            ->unique();
+
+        // Sum payments for those chat IDs
+        $amount = Payment::whereIn('chat_id', $chatIds)->sum('amount');
+
+        return [
+            'name' => $pharmacy->name,
+            'amount' => $amount
+        ];
+    });
+
+    // Monthly earnings per pharmacy (this month only)
+$monthlyEarnings = Pharmacy::all()->map(function ($pharmacy) {
+    $chatIds = Message::where('sender_type', Pharmacy::class)
+        ->where('sender_id', $pharmacy->id)
+        ->pluck('chat_id')
+        ->unique();
+
+    $amount = Payment::whereIn('chat_id', $chatIds)
+        ->whereMonth('created_at', now()->month)
+        ->whereYear('created_at', now()->year)
+        ->sum('amount');
+
+    return [
+        'name' => $pharmacy->name,
+        'amount' => $amount
+    ];
+});
+
+// Yearly earnings per pharmacy (this year only)
+$yearlyEarnings = Pharmacy::all()->map(function ($pharmacy) {
+    $chatIds = Message::where('sender_type', Pharmacy::class)
+        ->where('sender_id', $pharmacy->id)
+        ->pluck('chat_id')
+        ->unique();
+
+    $amount = Payment::whereIn('chat_id', $chatIds)
+        ->whereYear('created_at', now()->year)
+        ->sum('amount');
+
+    return [
+        'name' => $pharmacy->name,
+        'amount' => $amount
+    ];
+});
+
+$monthlyChart = [
+    'labels' => $monthlyEarnings->pluck('name'),
+    'amounts' => $monthlyEarnings->pluck('amount')
+];
+
+$yearlyChart = [
+    'labels' => $yearlyEarnings->pluck('name'),
+    'amounts' => $yearlyEarnings->pluck('amount')
+];
+
+
+    $pharmacyChartData = [
+        'labels' => $pharmacyAmounts->pluck('name'),
+        'amounts' => $pharmacyAmounts->pluck('amount')
+    ];
+
+    $admin = auth()->guard('admin')->user();
 
     if ($admin) {
-        return view('admin.home', compact('admin','customerCount', 'pharmacyCount', 'chartData'));
+        return view('admin.home', compact(
+            'admin',
+            'customerCount',
+            'pharmacyCount',
+            'chartData',
+            'pharmacyChartData',
+            'monthlyChart',
+            'yearlyChart'
+        ));
     }
 
     return redirect()->route('admin.login')->with('error', 'You must be logged in to view the admin dashboard.');
 }
+
 
 public function statisticsDetails($month)
 {
@@ -81,6 +157,17 @@ public function pharmacystatus()
         ]);
 
         return back()->with('success', 'Pharmacy status updated successfully');
+    }
+    public function pharmacyshow(Pharmacy $pharmacy)
+    {
+        // Load ratings with customer info
+    $pharmacy->load(['ratings.customer']);
+
+    // Calculate average rating
+    $averageRating = $pharmacy->ratings()->avg('rating');
+    $ratingCount = $pharmacy->ratings()->count();
+
+    return view('admin.pharmacies.show', compact('pharmacy', 'averageRating', 'ratingCount'));
     }
 
     public function customerindex()

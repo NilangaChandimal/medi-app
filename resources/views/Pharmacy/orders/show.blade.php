@@ -59,25 +59,35 @@
                     </div>
 
                     <div class="ml-7 space-y-2">
-                        <p class="text-gray-700">
-                            <span class="font-medium">Medicine:</span>
-                            <span class="text-gray-600">{{ $orderDetails['medicine'] }}</span>
-                        </p>
-                        <p class="text-gray-700">
-                            <span class="font-medium">Price per Unit:</span>
-                            <span class="text-gray-600">${{ number_format($orderDetails['price'], 2) }}</span>
-                        </p>
-                        <p class="text-gray-700">
-                            <span class="font-medium">Quantity:</span>
-                            <span class="text-gray-600">{{ $orderDetails['quantity'] }}</span>
-                        </p>
+                        @foreach ($orderDetails['items'] as $item)
+                            <div class="pb-2 border-b border-gray-100">
+                                <p class="text-gray-700">
+                                    <span class="font-medium">Medicine:</span>
+                                    <span class="text-gray-600">{{ $item['medicine'] }}</span>
+                                </p>
+                                <p class="text-gray-700">
+                                    <span class="font-medium">Price per Unit:</span>
+                                    <span class="text-gray-600">Rs.{{ number_format($item['price'], 2) }}</span>
+                                </p>
+                                <p class="text-gray-700">
+                                    <span class="font-medium">Quantity:</span>
+                                    <span class="text-gray-600">{{ $item['quantity'] }}</span>
+                                </p>
+                                <p class="text-gray-700">
+                                    <span class="font-medium">Subtotal:</span>
+                                    <span class="text-gray-600">Rs.{{ number_format($item['total'], 2) }}</span>
+                                </p>
+                            </div>
+                        @endforeach
+
                         <div class="pt-2 mt-2 border-t border-gray-100">
                             <p class="text-gray-800 font-bold text-lg">
-                                Total: ${{ number_format($orderDetails['total'], 2) }}
+                                Total: Rs.{{ number_format($orderDetails['total'], 2) }}
                             </p>
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <!-- Delivery Details -->

@@ -64,7 +64,7 @@
                             </h3>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
                                 {{ $payment->payment_date?->format('M d, Y') ?? $payment->created_at->format('M d, Y') }}
-                                · ${{ number_format($payment->amount, 2) }}
+                                - Rs.{{ number_format($payment->amount, 2) }}
                             </p>
                             <span
                                 class="inline-block mt-1 text-xs font-semibold px-2 py-1 rounded-full

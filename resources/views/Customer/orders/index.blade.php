@@ -115,7 +115,7 @@
                         <tr class="hover:bg-gray-50 transition-colors">
                             <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">#{{ $order->id }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-gray-700">{{ $order->chat->pharmacy->name ?? 'N/A' }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-gray-700 font-medium">${{ number_format($order->amount, 2) }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-gray-700 font-medium">Rs.{{ number_format($order->amount, 2) }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-gray-700">{{ $order->created_at->format('M d, Y') }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-3 py-1 text-sm font-medium rounded-full inline-flex items-center

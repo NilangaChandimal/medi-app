@@ -16,7 +16,7 @@
     </div>
 
     <!-- Summary Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div class="bg-white rounded-xl shadow-md border border-gray-100 p-6 flex items-center transition-transform hover:scale-105">
             <div class="rounded-full bg-blue-50 p-3 mr-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -42,8 +42,8 @@
         </div>
 
         <div class="bg-white rounded-xl shadow-md border border-gray-100 p-6 flex items-center transition-transform hover:scale-105">
-            <div class="rounded-full bg-amber-50 p-3 mr-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div class="rounded-full bg-yellow-50 p-3 mr-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
             </div>
@@ -51,34 +51,60 @@
                 <p class="text-sm text-gray-500 font-medium">Pending</p>
                 <p class="text-2xl font-bold text-gray-900">{{ $orders->where('status', '!=', 'completed')->count() }}</p>
             </div>
+
+
         </div>
+        <div class="bg-white rounded-xl shadow-md border border-gray-100 p-6 flex items-center transition-transform hover:scale-105">
+            <div class="rounded-full bg-red-50 p-3 mr-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500 font-medium">Total Amount</p>
+                <p class="text-2xl font-bold text-gray-900">
+                    Rs.{{ number_format($orders->sum('amount'), 2) }}
+                </p>
+            </div>
+        </div>
+
     </div>
 
+
     <!-- Search & Filter -->
-    <div class="mb-6 flex flex-col sm:flex-row gap-4">
+    <form method="GET" class="mb-6 flex flex-col sm:flex-row gap-4">
         <div class="relative flex-grow">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                 </svg>
             </div>
-            <input type="text" class="pl-10 pr-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg" placeholder="Search by customer name or order ID...">
+            <input
+                type="text"
+                name="search"
+                value="{{ request('search') }}"
+                class="pl-10 pr-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg"
+                placeholder="Search by customer name or order ID...">
         </div>
         <div class="flex gap-4">
-            <select class="focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm sm:text-sm border-gray-300 rounded-lg py-2">
-                <option>All Statuses</option>
-                <option>Completed</option>
-                <option>Processing</option>
-                <option>Pending</option>
+            <select name="status" class="focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm sm:text-sm border-gray-300 rounded-lg py-2">
+                <option value="">All Statuses</option>
+                <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
+                <option value="processing" {{ request('status') == 'processing' ? 'selected' : '' }}>Processing</option>
+                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
             </select>
-            <select class="focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm sm:text-sm border-gray-300 rounded-lg py-2">
-                <option>Last 30 days</option>
-                <option>Last 7 days</option>
-                <option>Today</option>
-                <option>All Time</option>
+            <select name="date" class="focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm sm:text-sm border-gray-300 rounded-lg py-2">
+                <option value="">All Time</option>
+                <option value="month" {{ request('date') == 'month' ? 'selected' : '' }}>Last 30 days</option>
+                <option value="week" {{ request('date') == 'week' ? 'selected' : '' }}>Last 7 days</option>
+                <option value="today" {{ request('date') == 'today' ? 'selected' : '' }}>Today</option>
             </select>
+            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-lg shadow-sm hover:bg-indigo-700">
+                Apply
+            </button>
         </div>
-    </div>
+    </form>
+
 
     <!-- Orders Table -->
     <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
@@ -143,7 +169,7 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap font-medium">${{ number_format($order->amount, 2) }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap font-medium">Rs.{{ number_format($order->amount, 2) }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $order->created_at->format('M d, Y H:i') }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             @if($order->status === 'completed')

@@ -5,7 +5,6 @@
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
-        <!-- Header with gradient background -->
         <div class="bg-gradient-to-r from-purple-600 to-blue-500 px-6 py-4">
             <h2 class="text-2xl font-bold text-white">My Profile</h2>
             <p class="text-purple-100">Update your personal information</p>
@@ -43,7 +42,6 @@
                 @csrf
                 @method('PUT')
 
-                <!-- Profile Image Section -->
                 <div class="mb-8 flex flex-col items-center">
                     <div class="relative mb-4 group">
                         <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-purple-100 shadow-md">
@@ -67,7 +65,6 @@
                     </label>
                 </div>
 
-                <!-- Personal Information Section -->
                 <div class="bg-gray-50 rounded-xl p-6 mb-8">
                     <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-purple-500" viewBox="0 0 20 20" fill="currentColor">
@@ -146,7 +143,6 @@
                     </div>
                 </div>
 
-                <!-- Password Change Section -->
                 <div class="bg-gray-50 rounded-xl p-6 mb-8">
                     <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-purple-500" viewBox="0 0 20 20" fill="currentColor">
@@ -201,7 +197,6 @@
                     </div>
                 </div>
 
-                <!-- Submit Button -->
                 <div class="flex justify-end">
                     <button type="submit" class="bg-gradient-to-r from-purple-600 to-blue-500 text-white px-6 py-3 rounded-lg font-medium hover:from-purple-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transform transition-all duration-300 hover:scale-105 shadow-lg">
                         <div class="flex items-center">

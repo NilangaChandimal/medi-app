@@ -12,9 +12,7 @@ class PharmacyPostController extends Controller
 {
     public function index()
     {
-        // Fetch posts only for the currently authenticated pharmacy
         $posts = PharmacyPost::where('pharmacy_id', Auth::id())->paginate(10);
-        //$posts = Post::orderBy('created_at', 'desc')->paginate(10);
         return view('Pharmacy.post.index', compact('posts'));
     }
 
@@ -50,7 +48,6 @@ class PharmacyPostController extends Controller
             $posts->video = 'PharmacyPost/videos/' . $videoName;
         }
 
-
         $posts->save();
 
         return redirect()->route('pharmacy.post.index')->with('success', 'Posts created successfully.');
@@ -79,10 +76,9 @@ class PharmacyPostController extends Controller
         $posts = PharmacyPost::findOrFail($id);
         $posts->content = $request->content;
 
-        // Update image if a new file is uploaded
         if ($request->hasFile('image')) {
             if ($posts->image && File::exists(public_path($posts->image))) {
-                File::delete(public_path($posts->image)); // Delete old image from public
+                File::delete(public_path($posts->image));
             }
 
             $image = $request->file('image');
@@ -93,7 +89,7 @@ class PharmacyPostController extends Controller
 
         if ($request->hasFile('video')) {
             if ($posts->video && File::exists(public_path($posts->video))) {
-                File::delete(public_path($posts->video)); // Delete old video from public
+                File::delete(public_path($posts->video));
             }
 
             $video = $request->file('video');
@@ -107,12 +103,10 @@ class PharmacyPostController extends Controller
         return redirect()->route('pharmacy.post.index')->with('success', 'Post updated successfully.');
     }
 
-
     public function destroy($id)
     {
         $posts = PharmacyPost::findOrFail($id);
 
-        // Delete files if they exist
         if ($posts->image) {
             Storage::delete($posts->image);
         }

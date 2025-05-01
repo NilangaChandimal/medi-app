@@ -46,7 +46,6 @@
     @endif
 </div>
 
-{{-- @push('scripts') --}}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const ratingInputs = document.querySelectorAll('.rating-input input');
@@ -70,25 +69,19 @@
             return checkedInput ? parseInt(checkedInput.value) : 0;
         }
 
-        // Initialize on load
         highlightStars(getSelectedRating());
 
-        // Add click to labels
         ratingLabels.forEach((label, index) => {
             const starValue = index + 1;
             const input = document.getElementById(`star${starValue}`);
 
-            // When label is clicked
             label.addEventListener('click', () => {
-                input.checked = true; // manually check the input
-                highlightStars(starValue); // update stars
+                input.checked = true;
+                highlightStars(starValue);
             });
 
-            // Hover effect (optional)
             label.addEventListener('mouseenter', () => highlightStars(starValue));
             label.addEventListener('mouseleave', () => highlightStars(getSelectedRating()));
         });
     });
     </script>
-
-{{-- @endpush --}}

@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('subject');
             $table->text('message');
-            $table->morphs('user'); // Creates user_id and user_type (for customer/pharmacy)
-            $table->string('status')->default('open'); // open, answered, closed
+            $table->morphs('user');
+            $table->string('status')->default('open'); 
             $table->text('admin_response')->nullable();
             $table->foreignId('admin_id')->nullable()->constrained('admins');
             $table->timestamps();

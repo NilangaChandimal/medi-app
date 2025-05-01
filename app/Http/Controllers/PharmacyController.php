@@ -22,7 +22,6 @@ class PharmacyController extends Controller
         $pharmacy = auth()->guard('pharmacy')->user();
 
         if (!$pharmacy) {
-            // Optional: redirect to login or show error
             return redirect()->route('pharmacy.login')->with('error', 'Please login to continue.');
         }
 
@@ -34,10 +33,8 @@ class PharmacyController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // Merge and sort by created_at
         $allPosts = $pharmacyPosts->merge($medicinePosts)->sortByDesc('created_at');
 
-        // Paginate manually
         $perPage = 10;
         $page = request()->get('page', 1);
         $paginatedPosts = new \Illuminate\Pagination\LengthAwarePaginator(
@@ -67,21 +64,19 @@ class PharmacyController extends Controller
             ->get();
 
             $latestChats = Chat::where('pharmacy_id', auth()->id())
-    ->with(['customer', 'lastMessage']) // eager load related models
-    ->latest('updated_at') // or use 'lastMessage.created_at' if needed
+    ->with(['customer', 'lastMessage'])
+    ->latest('updated_at')
     ->take(5)
     ->get();
 
-    $pharmacyId = auth()->id(); // assuming pharmacy is authenticated using default guard
+    $pharmacyId = auth()->id();
     $payments = Payment::whereHas('chat', function ($query) use ($pharmacyId) {
         $query->where('pharmacy_id', $pharmacyId);
     })
-    ->with(['chat.customer']) // eager load to avoid N+1 issues
+    ->with(['chat.customer'])
     ->latest()
-    ->take(5) // or paginate if needed
+    ->take(5)
     ->get();
-
-
 
         return view('pharmacy.home', compact('pharmacy', 'paginatedPosts', 'chats', 'userType', 'notifications', 'latestChats', 'payments'));
     }
@@ -94,6 +89,9 @@ class PharmacyController extends Controller
 
     if (!$post) {
         return response('Post not found', 404);
+    }
+    if (!empty($post->image) && is_string($post->image)) {
+        $post->image = json_decode($post->image, true);
     }
     $user = Auth::user();
         $chats = Chat::with('lastMessage')->get();
@@ -116,7 +114,6 @@ public function markAsRead($notificationId)
 {
     $notification = Notification::findOrFail($notificationId);
 
-    // Optionally, authorize this if needed (e.g., belongs to auth pharmacy)
     if ($notification->pharmacy_id !== auth()->guard('pharmacy')->id()) {
         abort(403, 'Unauthorized');
     }
@@ -131,78 +128,15 @@ public function markAsRead($notificationId)
     {
         $customer = Auth::user();
 
-        // Ensure the user is authenticated and is a customer
         if (!$customer || !$customer instanceof \App\Models\Customer) {
             return redirect()->route('customer.home')->with('error', 'You need to be logged in as a customer to start a chat.');
         }
 
-        // Create or find an existing chat
         $chat = Chat::firstOrCreate([
             'customer_id' => $customer->id,
             'pharmacy_id' => $pharmacy->id
         ]);
 
-        // Redirect to the customer's chat page
         return redirect()->route('customer.chats.show', $chat->id);
     }
-
-    // public function sendMedicineDetails(Request $request)
-    // {
-    //     $request->validate([
-    //         'message_id' => 'required|exists:chat_messages,id',
-    //         'medicine_name' => 'required|string',
-    //         'medicine_price' => 'required|numeric',
-    //         'total_amount' => 'required|numeric',
-    //     ]);
-
-    //     // Retrieve the chat message to link the medicine details to the right chat
-    //     $message = ChatMessage::findOrFail($request->message_id);
-
-    //     // Update or create a new medicine order message (you can customize this part)
-    //     $message->medicine_name = $request->medicine_name;
-    //     $message->medicine_price = $request->medicine_price;
-    //     $message->total_amount = $request->total_amount;
-    //     $message->is_order_sent = true; // You may want to track this
-    //     $message->save();
-
-    //     return back()->with('success', 'Medicine details sent successfully!');
-    // }
-
-
-    // public function dashboard(Request $request)
-    // {
-    //     $pharmacy = $request->user()->pharmacy()->withCount([
-    //         'orders',
-    //         'chats',
-    //         'notifications' => function($query) {
-    //             $query->whereNull('read_at');
-    //         }
-    //     ])->first();
-
-    //     return response()->json([
-    //         'stats' => $pharmacy,
-    //         'pending_orders' => $pharmacy->orders()->where('status', 'pending')->count(),
-    //         'active_chats' => $pharmacy->chats()->count()
-    //     ]);
-    // }
-
-    // public function updateProfile(Request $request)
-    // {
-    //     $data = $request->validate([
-    //         'address' => 'sometimes|string',
-    //         'phone' => 'sometimes|string',
-    //         'license_details' => 'sometimes|file'
-    //     ]);
-
-    //     $pharmacy = $request->user()->pharmacy;
-
-    //     if ($request->hasFile('license_details')) {
-    //         Storage::delete($pharmacy->license_details);
-    //         $data['license_details'] = $request->file('license_details')->store('licenses');
-    //     }
-
-    //     $pharmacy->update($data);
-
-    //     return response()->json($pharmacy);
-    // }
 }

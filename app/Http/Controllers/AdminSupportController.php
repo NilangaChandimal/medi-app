@@ -42,9 +42,6 @@ class AdminSupportController extends Controller
             'admin_id' => Auth::id()
         ]);
 
-        // Send notification to user
-        // $ticket->user->notify(new SupportTicketResponse($ticket));
-
         return redirect()->route('admin.support.index')
             ->with('success', 'Response submitted successfully');
     }

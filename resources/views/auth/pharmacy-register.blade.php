@@ -10,10 +10,7 @@
 <body class="min-h-screen bg-cover bg-center flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
       style="background-image: url('{{ asset('images/customer-background.jpg') }}');">
     <div class="max-w-2xl mx-auto">
-        <!-- Header Section -->
 
-
-        <!-- Registration Form Card -->
         <div class="bg-white shadow-2xl rounded-lg py-8 px-6">
             <div class="text-center mb-8">
                 <h2 class="text-3xl font-extrabold text-gray-900">Create Your Account</h2>
@@ -22,7 +19,6 @@
             <form method="POST" action="{{ route('pharmacy.register') }}" enctype="multipart/form-data" class="space-y-6">
                 @csrf
 
-                <!-- Profile Image Upload -->
                 <div class="flex flex-col items-center space-y-4">
                     <label for="profile_image" class="cursor-pointer">
                         <div class="relative group">
@@ -37,7 +33,6 @@
                     </label>
                 </div>
 
-                <!-- Personal Information Section -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-700">Pharmacy Name</label>
@@ -69,7 +64,6 @@
                     </div>
                 </div>
 
-                <!-- Professional Information Section -->
                 <div class="space-y-6">
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -96,7 +90,6 @@
                     </div>
                 </div>
 
-                <!-- Password Section -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
@@ -113,7 +106,6 @@
                     </div>
                 </div>
 
-                <!-- Submit Button -->
                 <div>
                     <button type="submit"
                             class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out">

@@ -118,6 +118,9 @@
         .typing-dot:nth-child(3) {
             animation-delay: 400ms;
         }
+        html {
+            scroll-behavior: smooth;
+        }
 
         @keyframes typing {
 
@@ -193,9 +196,8 @@
         }
     </style>
 
-    <div class="container mx-auto px-4 py-6 h-screen chat-container">
+    {{-- <div class="container mx-auto px-4 py-6 h-screen chat-container"> --}}
         <div class="flex flex-col md:flex-row bg-white rounded-2xl shadow-2xl overflow-hidden h-[calc(100vh-6rem)]">
-            <!-- Sidebar -->
             <div class="w-full md:w-1/3 lg:w-1/4 bg-gradient-to-br from-indigo-600 to-indigo-900 p-4">
                 <h2 class="text-white text-xl font-semibold mb-6 px-2 flex items-center">
                     <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -234,9 +236,7 @@
                 </div>
             </div>
 
-            <!-- Chat Area -->
             <div class="flex-1 flex flex-col bg-gray-50">
-                <!-- Chat Header -->
                 <div class="p-4 bg-white border-b border-gray-200">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-4">
@@ -261,8 +261,6 @@
                     </div>
                 </div>
 
-
-                <!-- Messages -->
                 <div class="flex-1 overflow-y-auto p-4 space-y-4" id="chat-messages">
                     @foreach ($messages as $message)
                         <div
@@ -273,22 +271,18 @@
                                     ? 'message-bubble-sent text-white'
                                     : 'message-bubble-received text-gray-900' }}">
 
-                                {{-- Message Text --}}
                                 <p class="text-sm">{{ $message->message }}</p>
 
-                                {{-- File Attachment --}}
                                 @if (isset($message->file_path))
                                     <img src="{{ asset('storage/' . $message->file_path) }}"
                                         class="mt-2 rounded-lg max-w-xs cursor-pointer clickable-image hover:opacity-90 transition-opacity" />
                                 @endif
 
-                                {{-- Audio Attachment --}}
                                 @if (isset($message->audio))
                                     <audio controls src="{{ asset('storage/' . $message->audio) }}"
                                         class="mt-2 w-full"></audio>
                                 @endif
 
-                                {{-- Pay Now Button INSIDE bubble --}}
                                 @if ($message->payment_button && get_class(Auth::user()) === 'App\\Models\\Customer')
                                     <a href="{{ route('customer.pay', [
                                         'chatId' => $chat->id,
@@ -299,7 +293,6 @@
                                     </a>
                                 @endif
 
-                                {{-- Timestamp --}}
                                 <span class="message-timestamp block mt-1">
                                     {{ $message->created_at->format('M d, Y h:i A') }}
                                 </span>
@@ -308,8 +301,6 @@
                     @endforeach
                 </div>
 
-
-                <!-- Input Area -->
                 <div class="p-4">
                     <form method="POST" action="{{ route($userType . '.chats.storeMessage', $chat->id) }}"
                         enctype="multipart/form-data" id="chat-form" class="space-y-4">
@@ -382,7 +373,7 @@
                             </button>
                         </div>
                     </form>
-                    
+
                     <div id="offer-modal" class="modal">
                         <div class="bg-white rounded-xl p-6 w-full max-w-xl mx-auto mt-20">
                             <h3 class="text-xl font-semibold mb-4">Medicine Bill</h3>
@@ -411,7 +402,6 @@
         </div>
     </div>
 
-    <!-- Modal -->
     <div id="image-modal" class="modal">
         <span class="close" id="close-modal">&times;</span>
         <img id="modal-image" src="" alt="Image Preview">
@@ -423,7 +413,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
     <script>
-        // Initialize emoji picker
         const pickerOptions = {
             onEmojiSelect: addEmoji,
             theme: 'light',
@@ -431,7 +420,6 @@
         };
         const picker = new EmojiMart.Picker(pickerOptions);
 
-        // Emoji picker toggle
         document.getElementById('emoji-button').addEventListener('click', () => {
             const emojiContainer = document.getElementById('emoji-container');
             if (emojiContainer.contains(picker)) {
@@ -447,14 +435,12 @@
             }
         });
 
-        // Add emoji to input
         function addEmoji(emoji) {
             const messageInput = document.getElementById('message-input');
             messageInput.value += emoji.native;
             messageInput.focus();
         }
 
-        // File input handling
         document.getElementById('file-input').addEventListener('change', function(event) {
             const file = event.target.files[0];
             const previewContainer = document.getElementById('image-preview');
@@ -488,7 +474,6 @@
             }, 300);
         }
 
-        // Message animations
         function animateMessages() {
             const messages = document.querySelectorAll('.message-bubble:not(.visible)');
             messages.forEach((message, index) => {
@@ -498,7 +483,6 @@
             });
         }
 
-        // Image modal handling
         const imageUrls = [];
         let currentIndex = 0;
 
@@ -540,7 +524,6 @@
             document.getElementById('modal-image').src = imageUrls[currentIndex];
         });
 
-        // Voice recording functionality
         let mediaRecorder;
         let audioChunks = [];
         const voiceButton = document.getElementById('voice-button');
@@ -593,14 +576,12 @@
             }
         }
 
-        // Initialize animations and scroll to bottom on load
         document.addEventListener('DOMContentLoaded', () => {
             animateMessages();
             const chatMessages = document.getElementById('chat-messages');
             chatMessages.scrollTop = chatMessages.scrollHeight;
         });
 
-        // Auto-scroll on new messages
         const chatForm = document.getElementById('chat-form');
         chatForm.addEventListener('submit', () => {
             setTimeout(() => {
@@ -610,12 +591,11 @@
         });
         const chatId = "{{ $chat->id }}";
 
-        // Offer functionality
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('offer-button').addEventListener('click', openOfferModal);
             document.getElementById('offer-form').addEventListener('submit', handleOfferSubmit);
 
-            addMedicineRow(); // Add initial row
+            addMedicineRow();
         });
 
         function openOfferModal() {
@@ -627,8 +607,8 @@
             document.getElementById('offer-modal').classList.remove('visible');
             setTimeout(() => {
                 document.getElementById('offer-modal').style.display = 'none';
-                document.getElementById('medicine-items').innerHTML = ''; // Clear form rows
-                addMedicineRow(); // Add one fresh row on reopen
+                document.getElementById('medicine-items').innerHTML = '';
+                addMedicineRow();
                 document.getElementById('offer-total').textContent = '0.00';
             }, 300);
         }
@@ -657,7 +637,6 @@
 
             container.appendChild(row);
 
-            // Bind input events for price and quantity to recalculate total
             row.querySelectorAll('input').forEach(input => {
                 input.addEventListener('input', calculateTotal);
             });
@@ -752,9 +731,6 @@
             }
         }
 
-
-
-        // Payment functionality
         function openPaymentModal(offer) {
             const paymentDetails = document.getElementById('payment-details');
             paymentDetails.innerHTML = `
@@ -779,7 +755,6 @@
         }
 
         document.getElementById('confirm-payment').addEventListener('click', async function() {
-            // Implement payment processing logic here
             alert('Payment processed successfully!');
             closePaymentModal();
         });

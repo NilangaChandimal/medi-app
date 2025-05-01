@@ -5,7 +5,6 @@
 @section('content')
     <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
         <div class="container mx-auto px-4 py-8 sm:py-16">
-            <!-- Header Section with Animation -->
             <div class="max-w-4xl mx-auto">
                 <div class="text-center mb-12">
                     <h1 class="text-3xl sm:text-5xl font-black mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent animate-gradient">
@@ -14,18 +13,14 @@
                     <p class="text-gray-600 dark:text-gray-400 text-lg">Connect and communicate with your contacts</p>
                 </div>
 
-                <!-- Chat List Container -->
                 <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg p-6 sm:p-8 rounded-2xl shadow-2xl border border-gray-200/50 dark:border-gray-700/50">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
                         @foreach($chats as $chat)
                             <div class="group relative">
-                                <!-- Hover Effect Background -->
                                 <div class="absolute inset-0 bg-gradient-to-r from-blue-500/0 to-purple-500/0 group-hover:from-blue-500/5 group-hover:to-purple-500/5 rounded-xl transition-all duration-500"></div>
 
-                                <!-- Chat Card -->
                                 <div class="relative bg-white dark:bg-gray-800 p-5 sm:p-6 rounded-xl border border-gray-100 dark:border-gray-700 group-hover:border-blue-300 dark:group-hover:border-blue-500/30 transition-all duration-300 ease-out transform hover:-translate-y-1 hover:shadow-xl">
                                     <a href="{{ route($userType . '.chats.show', $chat->id) }}" class="flex items-center space-x-4 sm:space-x-5">
-                                        <!-- Avatar Section -->
                                         <div class="relative">
                                             <div class="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-0 group-hover:opacity-100 blur transition-opacity duration-500"></div>
                                             <img
@@ -36,7 +31,6 @@
                                             <div class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-gray-800 shadow-lg"></div>
                                         </div>
 
-                                        <!-- Content Section -->
                                         <div class="flex-1 min-w-0">
                                             <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
                                                 {{ $userType === 'customer' ? $chat->pharmacy->name : $chat->customer->name }}
@@ -70,7 +64,6 @@
                                             </p>
                                         </div>
 
-                                        <!-- Arrow Icon -->
                                         <div class="text-gray-400 group-hover:text-blue-500 transition-colors duration-300">
                                             <svg class="w-6 h-6 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -86,7 +79,6 @@
         </div>
     </div>
 
-    <!-- Add this style to your layout or in a style tag -->
     <style>
         @keyframes gradient {
             0% { background-position: 0% 50%; }

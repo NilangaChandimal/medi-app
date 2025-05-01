@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('comment')->nullable();
             $table->timestamps();
 
-            $table->unique(['order_id', 'customer_id']); // Prevent duplicate ratings
+            $table->unique(['order_id', 'customer_id']);
         });
     }
 

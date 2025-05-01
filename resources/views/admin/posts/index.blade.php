@@ -4,7 +4,6 @@
 
 @section('content')
     <div class="container mx-auto px-4 py-8 bg-gray-50">
-        <!-- Page Header -->
         <div class="mb-8">
             <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg shadow-lg p-6 text-white">
                 <div class="flex items-center justify-between">
@@ -13,7 +12,6 @@
                         <p class="text-indigo-100 mt-2">Manage and moderate user-generated content</p>
                     </div>
                     <div class="hidden md:block">
-                        <!-- Font Awesome Post Icon -->
                         <i class="fa fa-newspaper text-white opacity-60 text-5xl"></i>
                     </div>
                 </div>
@@ -33,7 +31,6 @@
         </div>
 
         <div class="space-y-8">
-            <!-- Customer Posts Section -->
             <div id="customer-posts" class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
                 <div class="px-6 py-5 bg-gradient-to-r from-indigo-500 to-indigo-600 flex justify-between items-center">
                     <h2 class="text-2xl font-bold text-white flex items-center">
@@ -94,33 +91,43 @@
                                 <p class="text-gray-700 whitespace-pre-wrap">{{ $post->content }}</p>
                             </div>
 
-                            @if ($post->image || $post->video)
-                                <div class="mt-4 flex flex-wrap gap-4">
-                                    @if ($post->image)
-                                        <div class="flex-1 min-w-[250px]">
-                                            <div class="relative group cursor-pointer"
-                                                onclick="openImageModal('{{ asset($post->image) }}')">
-                                                <img src="{{ asset($post->image) }}" alt="Post image"
-                                                    class="w-full h-64 object-cover rounded-lg shadow-sm">
-                                                <div
-                                                    class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 rounded-lg">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endif
+                            @if (($post->image && is_array(json_decode($post->image, true))) || $post->video)
+    @php
+        // Try to decode images (if it's a JSON array)
+        $images = json_decode($post->image, true);
+        $images = is_array($images) ? $images : [$post->image]; // fallback for pharmacy (single image)
+    @endphp
 
-                                    @if ($post->video)
-                                        <div class="flex-1 min-w-[250px]">
-                                            <div class="rounded-lg overflow-hidden shadow-sm h-64">
-                                                <video controls class="w-full h-full object-cover rounded-lg">
-                                                    <source src="{{ asset($post->video) }}" type="video/mp4">
-                                                    Your browser does not support the video tag.
-                                                </video>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-                            @endif
+    <div class="mt-4 flex flex-wrap gap-4">
+        {{-- Loop through images --}}
+        @foreach ($images as $image)
+            <div class="flex-1 min-w-[250px]">
+                <div class="relative group cursor-pointer"
+                    onclick="openImageModal('{{ asset(is_array(json_decode($post->image, true)) ? $image : 'PharmacyPost/images/' . $image) }}')">
+                    <img src="{{ asset(is_array(json_decode($post->image, true)) ? $image : 'PharmacyPost/images/' . $image) }}"
+                        alt="Post image"
+                        class="w-full h-64 object-cover rounded-lg shadow-sm">
+                    <div
+                        class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 rounded-lg">
+                    </div>
+                </div>
+            </div>
+        @endforeach
+
+        {{-- Display video if exists --}}
+        @if ($post->video)
+            <div class="flex-1 min-w-[250px]">
+                <div class="rounded-lg overflow-hidden shadow-sm h-64">
+                    <video controls class="w-full h-full object-cover rounded-lg">
+                        <source src="{{ asset($post->video) }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        @endif
+    </div>
+@endif
+
 
 
                             <div class="mt-4 flex justify-end">
@@ -146,7 +153,6 @@
                 </div>
             </div>
 
-            <!-- Pharmacy Posts Section -->
             <div id="pharmacy-posts" class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
                 <div class="px-6 py-5 bg-gradient-to-r from-green-500 to-green-600 flex justify-between items-center">
                     <h2 class="text-2xl font-bold text-white flex items-center">
@@ -270,7 +276,6 @@
         </div>
     </div>
 
-    <!-- Back to top button -->
     <button id="back-to-top"
         class="fixed bottom-6 right-6 p-2 rounded-full bg-gray-800 text-white shadow-lg opacity-0 transition-opacity duration-300 hover:bg-gray-700 focus:outline-none">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -292,11 +297,9 @@
             modal.classList.add('hidden');
         }
 
-        // Optional: close modal when clicking outside the image
         document.getElementById('imageModal').addEventListener('click', function(e) {
             if (e.target === this) closeImageModal();
         });
-        // Back to top button functionality
         const backToTopButton = document.getElementById('back-to-top');
 
         window.addEventListener('scroll', () => {

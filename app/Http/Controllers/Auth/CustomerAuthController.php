@@ -24,10 +24,8 @@ class CustomerAuthController extends Controller
         if (Auth::guard('customer')->attempt($credentials)) {
             $customer = Auth::guard('customer')->user();
 
-            // Check if the customer is blocked
 
         if ($customer->is_blocked == 1) {
-            // Log out and redirect with an error if blocked
             Auth::guard('customer')->logout();
             return redirect()->back()->with('blocked', 'Your account has been Tempory blocked contact the hotline!!');
         }
@@ -107,7 +105,6 @@ public function update(Request $request)
         'profile_image' => 'nullable|image|max:2048',
     ]);
 
-    // Handle profile image
     if ($request->hasFile('profile_image')) {
         if ($customer->profile_image) {
             Storage::delete($customer->profile_image);
@@ -115,7 +112,6 @@ public function update(Request $request)
         $validated['profile_image'] = $request->file('profile_image')->store('customer-profile');
     }
 
-    // Update password if provided
     if (!empty($validated['password'])) {
         $validated['password'] = Hash::make($validated['password']);
     } else {

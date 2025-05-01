@@ -12,7 +12,6 @@
                         <p class="text-indigo-100 mt-2">Manage your pharmacies and customer complain and support</p>
                     </div>
                     <div class="hidden md:block">
-                        <!-- Font Awesome Dashboard Icon -->
                         <i class="fa fa-headphones-alt text-white opacity-60 text-5xl"></i>
                     </div>
                 </div>

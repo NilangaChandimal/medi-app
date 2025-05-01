@@ -4,7 +4,6 @@
 
 @section('content')
 <div class="container mx-auto px-4 py-8 max-w-7xl">
-    <!-- Dashboard Header -->
     <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg shadow-lg p-6 text-white mb-8">
         <div class="flex items-center justify-between">
             <div>
@@ -107,18 +106,6 @@
                                 </svg>
                                 View
                             </a>
-                            {{-- <form class="inline-block" method="POST"
-                                  action="{{ route('admin.chats.destroy', $chat) }}">
-                                @csrf @method('DELETE')
-                                <button type="submit"
-                                        class="inline-flex items-center px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded transition-colors"
-                                        onclick="return confirm('Delete entire chat history?')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                    Delete
-                                </button>
-                            </form> --}}
                         </td>
                     </tr>
                     @endforeach
@@ -129,11 +116,6 @@
         <div class="px-4 py-3 border-t bg-gray-50">
             {{ $chats->links() }}
         </div>
-    </div>
-
-    <!-- Footer -->
-    <div class="text-center text-gray-500 text-sm mt-8">
-        <p>© 2025 Your Pharmacy Management System. All rights reserved.</p>
     </div>
 </div>
 @endsection

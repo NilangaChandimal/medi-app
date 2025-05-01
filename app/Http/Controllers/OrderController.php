@@ -66,7 +66,6 @@ class OrderController extends Controller
             })
             ->firstOrFail();
 
-        // Parse order details from message
         $orderDetails = $this->parseOrderDetails($order->message->message);
 
         return view('Pharmacy.orders.show', compact('order', 'orderDetails', 'payment'));
@@ -80,7 +79,6 @@ class OrderController extends Controller
     $lines = explode("\n", $message);
 
     foreach ($lines as $line) {
-        // Match medicine lines: 1. medicine - $321 x 5 = $1605 (or any similar format)
         if (preg_match('/^\d+\.\s*(.+?)\s*-\s*\$?(\d+(?:\.\d+)?)\s*x\s*(\d+)/', trim($line), $match)) {
             $medicine = trim($match[1]);
             $price = (float) $match[2];
@@ -91,7 +89,7 @@ class OrderController extends Controller
                 'medicine' => $medicine,
                 'price' => $price,
                 'quantity' => $quantity,
-                'total' => $subtotal, // Calculate it directly
+                'total' => $subtotal,
             ];
         }
 
@@ -106,9 +104,6 @@ class OrderController extends Controller
         'total' => $total,
     ];
 }
-
-
-
 
     public function update(Request $request, $orderId)
     {
@@ -188,7 +183,6 @@ class OrderController extends Controller
         $total = null;
 
         foreach ($lines as $line) {
-            // Match lines like: "1. ddgdf - $23.00 x 2 = $46.00"
             if (preg_match('/^\d+\.\s+(.*?)\s+-\s+\$(\d{1,3}(?:,\d{3})*(?:\.\d{2})?)\s+x\s+(\d+)\s+=\s+\$(\d{1,3}(?:,\d{3})*(?:\.\d{2})?)$/', trim($line), $matches)) {
                 $medicines[] = [
                     'name' => $matches[1],
@@ -198,7 +192,6 @@ class OrderController extends Controller
                 ];
             }
 
-            // Match the total line: "💰 Total Offer Total: 1651.00"
             if (preg_match('/Total Offer Total:\s*(\d+(?:\.\d{2})?)/', $line, $match)) {
                 $total = (float) $match[1];
             }
@@ -209,59 +202,4 @@ class OrderController extends Controller
             'total' => $total,
         ];
     }
-
-
-    //     public function store(Request $request)
-    // {
-    //     $request->validate([
-    //         'pharmacy_id' => 'required|exists:pharmacies,id',
-    //         'customer_post_id' => 'required|exists:customer_posts,id',
-    //     ]);
-
-    //     Order::create([
-    //         'customer_id' => auth('customer')->id(),
-    //         'pharmacy_id' => $request->pharmacy_id,
-    //         'customer_post_id' => $request->customer_post_id,
-    //         'status' => 'pending',
-    //     ]);
-
-    //     return back()->with('success', 'Order placed successfully!');
-    // }
-
-
-    // public function create(Request $request, Post $post)
-    // {
-    //     $request->validate([
-    //         'total_amount' => 'required|numeric',
-    //         'payment_method' => 'required|in:card,upi,cod'
-    //     ]);
-
-    //     $order = Order::create([
-    //         'customer_id' => $post->customer_id,
-    //         'pharmacy_id' => $request->user()->pharmacy->id,
-    //         'post_id' => $post->id,
-    //         'status' => 'pending',
-    //         'total_amount' => $request->total_amount
-    //     ]);
-
-    //     // Create payment record
-    //     $order->payment()->create([
-    //         'payment_method' => $request->payment_method,
-    //         'status' => $request->payment_method === 'cod' ? 'success' : 'pending'
-    //     ]);
-
-    //     return response()->json($order, 201);
-    // }
-
-    // public function updateStatus(Order $order, Request $request)
-    // {
-    //     $request->validate(['status' => 'required|in:confirmed,processing,shipped,delivered,cancelled']);
-
-    //     $order->update(['status' => $request->status]);
-
-    //     // Notify customer about status change
-    //     $order->customer->notify(new OrderStatusUpdated($order));
-
-    //     return response()->json($order);
-    // }
 }

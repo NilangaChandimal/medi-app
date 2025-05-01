@@ -11,10 +11,7 @@
 <body class="min-h-screen bg-cover bg-center flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
       style="background-image: url('{{ asset('images/customer-background.jpg') }}');">
     <div class="max-w-md w-full">
-        <!-- Logo or Company Name Section -->
 
-
-        <!-- Login Form Card -->
         <div class="bg-white shadow-2xl rounded-lg py-8 px-6 space-y-6">
             <div class="text-center mb-8">
                 <h2 class="text-3xl font-extrabold text-gray-900">

@@ -11,7 +11,6 @@
         }
     </style>
 
-    <!-- Notification Modal -->
     <div id="notificationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-start justify-end p-4">
         <div class="bg-white dark:bg-gray-800 w-96 rounded-lg shadow-xl overflow-y-auto max-h-[80vh]">
             <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
@@ -45,9 +44,7 @@
         </div>
     </div>
 
-
-
-    <div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-gray-800">
+    <div class="min-h-screen bg-gradient-to-br from-gray-900 to-blue-50 dark:from-gray-900 dark:to-gray-900">
         <div class="container mx-auto px-4 py-8">
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
                 <div class="lg:col-span-1 space-y-6">
@@ -56,32 +53,30 @@
                         <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">My Orders</h2>
 
                         @forelse($payments as $payment)
-                        <div class="mb-4 border-b border-gray-200 dark:border-gray-700 pb-4 last:pb-0 last:border-none">
-                            <h3 class="text-sm font-medium text-gray-800 dark:text-white">
-                                <a href="{{ route('pharmacy.orders.show', $payment->id) }}">
-                                    #{{ $payment->id }} - {{ $payment->chat->customer->name ?? 'N/A' }}
-                                </a>
-                            </h3>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">
-                                {{ $payment->payment_date?->format('M d, Y') ?? $payment->created_at->format('M d, Y') }}
-                                - Rs.{{ number_format($payment->amount, 2) }}
-                            </p>
-                            <span
-                                class="inline-block mt-1 text-xs font-semibold px-2 py-1 rounded-full
+                            <div class="mb-4 border-b border-gray-200 dark:border-gray-700 pb-4 last:pb-0 last:border-none">
+                                <h3 class="text-sm font-medium text-gray-800 dark:text-white">
+                                    <a href="{{ route('pharmacy.orders.show', $payment->id) }}">
+                                        #{{ $payment->id }} - {{ $payment->chat->customer->name ?? 'N/A' }}
+                                    </a>
+                                </h3>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">
+                                    {{ $payment->payment_date?->format('M d, Y') ?? $payment->created_at->format('M d, Y') }}
+                                    - Rs.{{ number_format($payment->amount, 2) }}
+                                </p>
+                                <span
+                                    class="inline-block mt-1 text-xs font-semibold px-2 py-1 rounded-full
                                 {{ $payment->status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
-                                {{ ucfirst($payment->status) }}
-                            </span>
-                        </div>
-                    @empty
-                        <p class="text-gray-500 dark:text-gray-400">You have no orders yet.</p>
-                    @endforelse
+                                    {{ ucfirst($payment->status) }}
+                                </span>
+                            </div>
+                        @empty
+                            <p class="text-gray-500 dark:text-gray-400">You have no orders yet.</p>
+                        @endforelse
 
 
                     </div>
                 </div>
 
-
-                <!-- Main Content Section -->
                 <div class="lg:col-span-2 space-y-6">
                     @forelse($paginatedPosts as $post)
                         @php
@@ -97,7 +92,6 @@
                         <div id="{{ $postId }}"
                             class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700 transition-all duration-300">
                             <div class="p-6">
-                                {{-- Profile section with conditional link --}}
                                 @if (!$isPharmacy)
                                     @foreach ($chats as $chat)
                                         <a href="{{ route($userType . '.chats.show', $chat->id) }}"
@@ -119,16 +113,32 @@
                                     </a>
                                 @endif
 
-                                {{-- Post content --}}
                                 <p class="mt-4 text-gray-600 dark:text-gray-300">{{ $post->content }}</p>
 
-                                {{-- Media content --}}
-                                @php
-                                    $mediaCount = ($post->image ? 1 : 0) + ($post->video ? 1 : 0);
-                                @endphp
-
-                                @if ($post->image || $post->video)
-                                    <div class="mt-4 gap-4 {{ $mediaCount > 1 ? 'grid grid-cols-2' : '' }}">
+                                @if (!$isPharmacy)
+                                    @php $images = json_decode($post->image, true) ?? []; @endphp
+                                    @if (!empty($images) || $post->video)
+                                        <div
+                                            class="mt-4 gap-4 {{ count($images) + ($post->video ? 1 : 0) > 1 ? 'grid grid-cols-2' : '' }}">
+                                            @foreach ($images as $image)
+                                                <div class="relative overflow-hidden rounded-xl group cursor-pointer"
+                                                    onclick="openModal('{{ asset($image) }}', 'image')">
+                                                    <img src="{{ asset($image) }}" alt="Post Image"
+                                                        class="w-full h-64 object-cover transform transition-transform duration-500 group-hover:scale-105">
+                                                </div>
+                                            @endforeach
+                                            @if ($post->video)
+                                                <div class="relative rounded-xl overflow-hidden">
+                                                    <video class="w-full h-64 object-cover cursor-pointer" controls
+                                                        onclick="openModal('{{ asset($post->video) }}', 'video')">
+                                                        <source src="{{ asset($post->video) }}" type="video/mp4">
+                                                    </video>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @endif
+                                @elseif ($post->image || $post->video)
+                                    <div class="mt-4 gap-4 {{ $post->video ? 'grid grid-cols-2' : '' }}">
                                         @if ($post->image)
                                             <div class="relative overflow-hidden rounded-xl group cursor-pointer"
                                                 onclick="openModal('{{ asset($post->image) }}', 'image')">
@@ -136,7 +146,6 @@
                                                     class="w-full h-64 object-cover transform transition-transform duration-500 group-hover:scale-105">
                                             </div>
                                         @endif
-
                                         @if ($post->video)
                                             <div class="relative rounded-xl overflow-hidden">
                                                 <video class="w-full h-64 object-cover cursor-pointer" controls
@@ -155,12 +164,10 @@
                         </div>
                     @endforelse
 
-                <!-- Pagination -->
-                <div class="mt-8">
-                    {{ $paginatedPosts->links() }}
+                    <div class="mt-8">
+                        {{ $paginatedPosts->links() }}
+                    </div>
                 </div>
-            </div>
-                <!-- Right: Recent Chats Section -->
                 <div class="lg:col-span-1 space-y-6">
                     <div
                         class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 p-6">
@@ -206,9 +213,6 @@
         </div>
     </div>
 
-
-
-
     <div id="mediaModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center hidden"
         onclick="outsideClickClose(event)">
         <div class="bg-white rounded-lg overflow-hidden shadow-lg max-w-2xl w-full p-4 relative"
@@ -218,7 +222,6 @@
         </div>
     </div>
 
-    <!-- Post Modal -->
     <div id="postModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
         <div class="bg-white rounded-lg shadow-xl p-4 max-w-xl w-full relative">
             <button onclick="closePostModal()" class="absolute top-3 right-3 text-gray-500 text-2xl">✕</button>
@@ -266,21 +269,15 @@
                 .catch(error => console.error("Error:", error));
         }
 
-
-
-
-
         function openModal(src, type) {
             const modal = document.getElementById('mediaModal');
             const content = document.getElementById('modalContent');
 
-            // Close the notification modal if open
             const notificationModal = document.getElementById('notificationModal');
             if (notificationModal && !notificationModal.classList.contains('hidden')) {
                 notificationModal.classList.add('hidden');
             }
 
-            // Set content based on type
             if (type === 'image') {
                 content.innerHTML = `<img src="${src}" class="w-full h-auto rounded-lg">`;
             } else if (type === 'video') {
@@ -290,7 +287,6 @@
                              </video>`;
             }
 
-            // Show the modal
             modal.classList.remove('hidden');
         }
 
@@ -299,12 +295,12 @@
             const video = document.getElementById('modalVideo');
 
             if (video) {
-                video.pause(); // Pause the video
-                video.currentTime = 0; // Reset video to the start
+                video.pause();
+                video.currentTime = 0;
             }
 
             modal.classList.add('hidden');
-            document.getElementById('modalContent').innerHTML = ''; // Clear modal content
+            document.getElementById('modalContent').innerHTML = '';
         }
 
         function outsideClickClose(event) {
@@ -316,16 +312,13 @@
 
 
         async function openPostModal(postId, notificationId) {
-            // Hide notification modal
             const notificationModal = document.getElementById('notificationModal');
             if (notificationModal && !notificationModal.classList.contains('hidden')) {
                 notificationModal.classList.add('hidden');
             }
 
-            // Mark notification as read
             await markAsRead(notificationId);
 
-            // Fetch and show post
             fetch(`/pharmacy/posts/${postId}`)
                 .then(res => {
                     if (!res.ok) throw new Error("Post not found");
@@ -341,10 +334,9 @@
                 });
         }
 
-
         function closePostModal() {
             document.getElementById('postModal').classList.add('hidden');
-            document.getElementById('postModalContent').innerHTML = ''; // clear content
+            document.getElementById('postModalContent').innerHTML = '';
         }
     </script>
 @endsection

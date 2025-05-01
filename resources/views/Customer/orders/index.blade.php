@@ -5,7 +5,6 @@
 @section('content')
 <div class="bg-gradient-to-b from-blue-50 to-white min-h-screen py-8">
     <div class="container mx-auto px-4">
-        <!-- Header -->
         <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
             <div>
                 <h1 class="text-3xl font-bold text-gray-900">My Orders</h1>
@@ -13,7 +12,6 @@
             </div>
         </div>
 
-        <!-- Stats Summary -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <div class="bg-white rounded-lg shadow p-6 flex items-center">
                 <div class="rounded-full bg-blue-100 p-3 mr-4">
@@ -53,7 +51,6 @@
             </div>
         </div>
 
-        <!-- Filter Options -->
         <div class="bg-white rounded-lg shadow mb-6 p-4">
             <form class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
@@ -96,7 +93,6 @@
             </form>
         </div>
 
-        <!-- Orders Table -->
         <div class="bg-white rounded-lg shadow overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
@@ -154,7 +150,6 @@
                 </table>
             </div>
 
-            <!-- Empty State -->
             @if($orders->isEmpty())
             <div class="text-center py-12">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -168,7 +163,6 @@
             </div>
             @endif
 
-            <!-- Pagination -->
             <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
                 {{ $orders->links() }}
             </div>

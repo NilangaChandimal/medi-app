@@ -4,7 +4,6 @@
 
 @section('content')
 <div class="container mx-auto px-4 py-8 bg-gray-50 min-h-screen">
-    <!-- Dashboard Header -->
     <div class="mb-6">
         <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg shadow-lg p-6 text-white">
             <div class="flex items-center justify-between">
@@ -13,7 +12,6 @@
                     <p class="text-indigo-100 mt-2">Welcome back! Here's your pharmacy management overview</p>
                 </div>
                 <div class="hidden md:block">
-                    <!-- Font Awesome Dashboard Icon -->
                     <i class="fa fa-tachometer-alt text-white opacity-60 text-5xl"></i>
                 </div>
             </div>
@@ -23,7 +21,6 @@
 
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <!-- Customer Statistics Card -->
         <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-indigo-500 hover:shadow-xl transition-shadow duration-300">
             <div class="flex items-center justify-between">
                 <div>
@@ -47,7 +44,6 @@
             </div>
         </div>
 
-        <!-- Pharmacy Statistics Card -->
         <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-green-500 hover:shadow-xl transition-shadow duration-300">
             <div class="flex items-center justify-between">
                 <div>
@@ -72,7 +68,6 @@
         </div>
     </div>
 
-    <!-- Statistics Chart -->
     <div class="bg-white rounded-lg shadow-md p-6 mb-8 hover:shadow-lg transition-shadow duration-300">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-lg font-semibold text-gray-700">Registration Trends</h3>
@@ -82,7 +77,6 @@
         </div>
     </div>
 
-    <!-- Pharmacy Payment Chart -->
     <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-lg font-semibold text-gray-700">Pharmacy Earnings (Rs.)</h3>
@@ -267,7 +261,6 @@ const yearlyData = {
         };
     }
 
-    // Helper to generate a color array in PHP or here in JS
     function fakeColor() {
         const colors = ['#f59e0b', '#10b981', '#3b82f6', '#ef4444', '#8b5cf6', '#ec4899'];
         return colors[Math.floor(Math.random() * colors.length)];
@@ -279,13 +272,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     chartToggles.forEach(btn => {
         btn.addEventListener('click', function () {
-            // Remove active-red from all buttons
             chartToggles.forEach(b => b.classList.remove('active-red'));
 
-            // Add active-red to the clicked button
             this.classList.add('active-red');
 
-            // Change chart data
             const type = this.dataset.type;
             if (type === 'monthly') {
                 pharmacyChart.data = monthlyData;
@@ -296,7 +286,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Set Monthly as default active on load
     document.getElementById('btnMonthly').classList.add('active-red');
 });
 </script>

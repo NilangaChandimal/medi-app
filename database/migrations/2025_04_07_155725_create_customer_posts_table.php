@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('customer_id');
             $table->text('content');
-            $table->string('image')->nullable();
+            $table->text('image')->nullable();
             $table->string('video')->nullable();
             $table->enum('visibility', ['pharmacy', 'public'])->default('public');
             $table->timestamps();

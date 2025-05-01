@@ -46,14 +46,14 @@ class CustomerController extends Controller
     );
 
     $latestChats = Chat::where('customer_id', auth()->id())
-    ->with(['pharmacy', 'lastMessage']) // eager load related models
-    ->latest('updated_at') // or use 'lastMessage.created_at' if needed
+    ->with(['pharmacy', 'lastMessage'])
+    ->latest('updated_at')
     ->take(5)
     ->get();
 
     $orders = Payment::where('customer_id', auth()->id())
-    ->latest('updated_at') // or use 'lastMessage.created_at' if needed
-    ->take(5) // if you want to limit the number of orders
+    ->latest('updated_at')
+    ->take(5)
     ->get();
 
     return view('customer.home', compact('customer', 'paginatedPosts', 'latestChats', 'orders'));

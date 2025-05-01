@@ -41,7 +41,6 @@
                 @csrf
                 @method('PUT')
 
-                <!-- Profile Image Section -->
                 <div class="mb-8 bg-gray-50 p-6 rounded-lg border border-gray-100">
                     <label class="block text-lg font-medium text-gray-700 mb-3">Profile Image</label>
                     <div class="flex items-center space-x-6">
@@ -68,9 +67,7 @@
                     </div>
                 </div>
 
-                <!-- Information Sections -->
                 <div class="space-y-8">
-                    <!-- Basic Information -->
                     <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
                         <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
                             <svg class="w-5 h-5 mr-2 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
@@ -100,7 +97,6 @@
                         </div>
                     </div>
 
-                    <!-- Registration Details -->
                     <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
                         <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
                             <svg class="w-5 h-5 mr-2 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
@@ -132,7 +128,6 @@
                         </div>
                     </div>
 
-                    <!-- Contact Information -->
                     <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
                         <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
                             <svg class="w-5 h-5 mr-2 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
@@ -171,7 +166,6 @@
                         </div>
                     </div>
 
-                    <!-- Password Update -->
                     <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
                         <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
                             <svg class="w-5 h-5 mr-2 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">

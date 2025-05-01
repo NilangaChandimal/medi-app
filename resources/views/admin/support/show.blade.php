@@ -5,7 +5,6 @@
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6">
-        <!-- Back Button -->
         <a href="{{ route('admin.support.index') }}"
            class="mb-4 inline-flex items-center text-indigo-600 hover:text-indigo-900 transition-colors duration-150">
             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -14,7 +13,6 @@
             Back to Tickets
         </a>
 
-        <!-- Ticket Header -->
         <div class="border-b border-gray-200 pb-4 mb-6">
             <h1 class="text-2xl font-bold mb-3 text-gray-800">{{ $ticket->subject }}</h1>
             <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600">
@@ -50,7 +48,6 @@
             </div>
         </div>
 
-        <!-- Ticket Content -->
         <div class="mb-8">
             <h3 class="text-lg font-semibold mb-4 flex items-center text-gray-800">
                 <svg class="w-5 h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -82,7 +79,6 @@
             @endif
         </div>
 
-        <!-- Response Section -->
         <div class="border-t border-gray-200 pt-6">
             <h3 class="text-lg font-semibold mb-4 flex items-center text-gray-800">
                 <svg class="w-5 h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -105,7 +101,6 @@
                 @csrf
                 @method('PUT')
 
-                <!-- Response Input -->
                 <div>
                     <label for="response" class="block text-sm font-medium text-gray-700 mb-1">
                         Your Response
@@ -116,7 +111,6 @@
                     >{{ old('response', $ticket->admin_response) }}</textarea>
                 </div>
 
-                <!-- Status Selection -->
                 <div>
                     <label for="status" class="block text-sm font-medium text-gray-700 mb-1">
                         Update Status
@@ -133,7 +127,6 @@
                     </select>
                 </div>
 
-                <!-- Response History -->
                 @if($ticket->admin_response)
                 <div class="bg-blue-50 p-5 rounded-lg border border-blue-100">
                     <h4 class="font-medium mb-2 text-blue-800 flex items-center">
@@ -152,7 +145,6 @@
                 </div>
                 @endif
 
-                <!-- Submit Button -->
                 <div class="text-right">
                     <button type="submit"
                         class="bg-indigo-600 text-white px-5 py-2 rounded-md hover:bg-indigo-700 shadow-sm transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500

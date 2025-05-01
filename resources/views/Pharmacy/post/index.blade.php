@@ -5,7 +5,6 @@
 @section('content')
 <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <!-- Header Section -->
         <div class="relative mb-12">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                 <div class="relative z-10">
@@ -30,7 +29,6 @@
             </div>
         </div>
 
-        <!-- Success Message -->
         @if(session('success'))
             <div class="mb-8 animate-fade-in-down">
                 <div class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white p-4 rounded-xl shadow-lg">
@@ -44,7 +42,6 @@
             </div>
         @endif
 
-        <!-- Posts Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @forelse($posts as $post)
                 <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">

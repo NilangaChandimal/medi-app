@@ -17,6 +17,11 @@ class CustomerPost extends Model
         'visibility',
     ];
 
+    public function getImageListAttribute()
+    {
+        return json_decode($this->image, true) ?? [];
+    }
+
     public function customer()
     {
         return $this->belongsTo(Customer::class);

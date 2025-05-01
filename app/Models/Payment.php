@@ -19,17 +19,17 @@ class Payment extends Model
         'chat_id',
         'message_id',
         'user_id',
-        'customer_id',  // Added to match the controller
+        'customer_id',  
         'amount',
         'status',
         'payment_date',
-        'phone_number', // Added new field
-        'address_line1', // Added new field
-        'address_line2', // Added new field
-        'city',         // Added new field
-        'state',        // Added new field
-        'postal_code',  // Added new field
-        'address',      // Added new field for JSON representation
+        'phone_number',
+        'address_line1',
+        'address_line2',
+        'city',
+        'state',
+        'postal_code',
+        'address',
     ];
 
     /**
@@ -40,7 +40,7 @@ class Payment extends Model
     protected $casts = [
         'payment_date' => 'datetime',
         'amount' => 'float',
-        'address' => 'array', // Cast the JSON address to an array when accessed
+        'address' => 'array',
     ];
 
     /**

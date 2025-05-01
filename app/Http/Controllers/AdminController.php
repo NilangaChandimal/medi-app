@@ -41,13 +41,11 @@ class AdminController extends Controller
 
         // Get total amount paid to each pharmacy
         $pharmacyAmounts = Pharmacy::all()->map(function ($pharmacy) {
-            // Get all chat IDs where this pharmacy is the sender
             $chatIds = Message::where('sender_type', Pharmacy::class)
                 ->where('sender_id', $pharmacy->id)
                 ->pluck('chat_id')
                 ->unique();
 
-            // Sum payments for those chat IDs
             $amount = Payment::whereIn('chat_id', $chatIds)->sum('amount');
 
             return [
@@ -56,7 +54,7 @@ class AdminController extends Controller
             ];
         });
 
-        // Monthly earnings per pharmacy (this month only)
+        // Monthly earnings per pharmacy
         $monthlyEarnings = Pharmacy::all()->map(function ($pharmacy) {
             $chatIds = Message::where('sender_type', Pharmacy::class)
                 ->where('sender_id', $pharmacy->id)
@@ -74,7 +72,7 @@ class AdminController extends Controller
             ];
         });
 
-        // Yearly earnings per pharmacy (this year only)
+        // Yearly earnings per pharmacy
         $yearlyEarnings = Pharmacy::all()->map(function ($pharmacy) {
             $chatIds = Message::where('sender_type', Pharmacy::class)
                 ->where('sender_id', $pharmacy->id)
@@ -277,15 +275,5 @@ class AdminController extends Controller
     {
         return view('admin.payments.show', compact('payment'));
     }
-
-
-    // public function chatdestroy(Chat $chat)
-    // {
-    //     $chat->messages()->delete();
-    //     $chat->delete();
-
-    //     return redirect()->route('admin.chats.index')
-    //         ->with('success', 'Chat history deleted successfully');
-    // }
 
 }

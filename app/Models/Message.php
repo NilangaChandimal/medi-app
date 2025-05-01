@@ -25,7 +25,6 @@ class Message extends Model
 
     public function getTotalAttribute()
 {
-    // Try to extract total from message text using regex
     preg_match('/Total: (\d+\.?\d*)/', $this->message, $matches);
     return isset($matches[1]) ? (float)$matches[1] : 0;
 }

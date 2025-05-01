@@ -85,7 +85,6 @@ class AdminAuthController extends Controller
         ],
     ]);
 
-    // Remove old_password from validated data
     unset($validated['old_password']);
 
     if (!empty($validated['password'])) {

@@ -5,7 +5,6 @@
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
-        <!-- Header with gradient background -->
         <div class="bg-gradient-to-r from-blue-500 to-indigo-600 px-6 py-4">
             <h1 class="text-2xl font-bold text-white flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -17,7 +16,6 @@
         </div>
 
         <div class="p-6">
-            <!-- Display validation errors if any -->
             @if ($errors->any())
                 <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded shadow-sm">
                     <div class="flex items-center mb-1">
@@ -34,11 +32,9 @@
                 </div>
             @endif
 
-            <!-- Post Creation Form -->
             <form action="{{ route('pharmacy.post.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                 @csrf
 
-                <!-- Textarea for post content -->
                 <div class="bg-gray-50 rounded-xl p-4 shadow-sm border border-gray-100">
                     <label for="content" class="block text-gray-700 text-sm font-medium mb-2 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -49,9 +45,7 @@
                     <textarea name="content" rows="4" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" placeholder="Share updates, offers, or health tips with your customers..." required></textarea>
                 </div>
 
-                <!-- Media Upload Section -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- File upload for images -->
                     <div class="bg-blue-50 rounded-xl p-4 shadow-sm border border-blue-100 transition-all hover:shadow-md">
                         <label for="image" class="block text-gray-700 text-sm font-medium mb-2 flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -76,7 +70,6 @@
                         </div>
                     </div>
 
-                    <!-- File upload for videos -->
                     <div class="bg-teal-50 rounded-xl p-4 shadow-sm border border-teal-100 transition-all hover:shadow-md">
                         <label for="video" class="block text-gray-700 text-sm font-medium mb-2 flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-teal-500 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -102,13 +95,11 @@
                     </div>
                 </div>
 
-                <!-- Preview Area (Optional) -->
                 <div id="preview" class="hidden bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <h3 class="text-sm font-medium text-gray-700 mb-2">Preview</h3>
                     <div id="preview-content" class="flex flex-wrap gap-2"></div>
                 </div>
 
-                <!-- Submit button -->
                 <div class="flex justify-end">
                     <button type="submit" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-lg shadow-md hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -122,7 +113,6 @@
     </div>
 </div>
 
-<!-- Simple Javascript for file preview (optional) -->
 <script>
     document.getElementById('image').addEventListener('change', function(e) {
         const preview = document.getElementById('preview');

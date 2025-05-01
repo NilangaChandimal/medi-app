@@ -5,7 +5,6 @@
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
-        <!-- Header with gradient background -->
         <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4">
             <div class="flex justify-between items-center">
                 <h2 class="text-2xl font-bold text-white">Order #{{ $order->id }}</h2>
@@ -16,7 +15,6 @@
         </div>
 
         <div class="p-6 space-y-8">
-            <!-- Pharmacy Information -->
             <div class="bg-indigo-50 rounded-xl overflow-hidden">
                 <div class="bg-indigo-100 px-4 py-3">
                     <h3 class="text-lg font-semibold text-indigo-800">Pharmacy Details</h3>
@@ -73,7 +71,6 @@
                 </div>
             </div>
 
-            <!-- Order Summary -->
             <div class="bg-purple-50 rounded-xl overflow-hidden">
                 <div class="bg-purple-100 px-4 py-3">
                     <h3 class="text-lg font-semibold text-purple-800">Order Summary</h3>
@@ -109,8 +106,6 @@
                 </div>
             </div>
 
-
-            <!-- Billing Information -->
             @if($order->address || $order->phone_number)
             <div class="bg-green-50 rounded-xl overflow-hidden">
                 <div class="bg-green-100 px-4 py-3">
@@ -164,7 +159,6 @@
             </div>
             @endif
 
-            <!-- Order Status -->
             <div class="bg-blue-50 rounded-xl overflow-hidden">
                 <div class="bg-blue-100 px-4 py-3">
                     <h3 class="text-lg font-semibold text-blue-800">Order Status</h3>
@@ -210,7 +204,6 @@
                 </div>
             </div>
 
-            <!-- Rating Form when order is completed -->
             @if($order->status === 'completed')
                 <div class="bg-yellow-50 rounded-xl overflow-hidden">
                     <div class="bg-yellow-100 px-4 py-3">

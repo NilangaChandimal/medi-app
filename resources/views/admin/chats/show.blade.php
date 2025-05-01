@@ -4,7 +4,6 @@
 
 @section('content')
 <div class="container mx-auto px-4 py-8 max-w-5xl">
-    <!-- Chat Header Card -->
     <div class="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-100 mb-6">
         <div class="px-6 py-5 border-b bg-gradient-to-r from-indigo-50 to-purple-50 flex flex-col md:flex-row justify-between md:items-center gap-4">
             <div>
@@ -48,7 +47,6 @@
         </div>
     </div>
 
-    <!-- Chat Messages -->
     <div class="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-100">
         <div class="px-6 py-4 border-b flex justify-between items-center">
             <h3 class="font-semibold text-gray-700 flex items-center">
@@ -148,7 +146,6 @@
             @endforeach
         </div>
 
-        <!-- Empty State -->
         @if($chat->messages->isEmpty())
         <div class="flex flex-col items-center justify-center py-16 px-4 text-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -158,11 +155,6 @@
             <p class="text-gray-500 mt-1">This conversation does not contain any messages.</p>
         </div>
         @endif
-    </div>
-
-    <!-- Footer -->
-    <div class="text-center text-gray-500 text-sm mt-8">
-        <p>© 2025 Your Pharmacy Management System. All rights reserved.</p>
     </div>
 </div>
 @endsection

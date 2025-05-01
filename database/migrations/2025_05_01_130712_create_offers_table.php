@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('offers', function (Blueprint $table) {
-                $table->id();
-                $table->foreignId('chat_id')->constrained()->onDelete('cascade');
-                $table->string('name');
-                $table->decimal('price', 10, 2);
-                $table->integer('quantity');
-                $table->decimal('total', 10, 2);
-                $table->timestamps();
-        });
+            $table->id();
+            $table->foreignId('chat_id')->constrained()->onDelete('cascade');
+            $table->string('name');
+            $table->decimal('price', 10, 2);
+            $table->integer('quantity');
+            $table->decimal('total', 10, 2);
+            $table->timestamps();
+    });
     }
 
     /**

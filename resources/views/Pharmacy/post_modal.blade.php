@@ -20,9 +20,16 @@
 
 <p class="text-gray-700 dark:text-gray-300 mb-4">{{ $post->content }}</p>
 
-@if ($post->image)
-    <img src="{{ asset($post->image) }}" class="w-full rounded-xl mb-4">
+@if (!empty($post->image) && is_array($post->image))
+    @foreach ($post->image as $image)
+        <img src="{{ asset($image) }}"
+             alt="Post Image"
+             class="w-full max-w-md max-h-96 rounded-xl mb-4 object-cover">
+    @endforeach
 @endif
+
+
+
 
 @if ($post->video)
     <video controls class="w-full rounded-xl mb-4">

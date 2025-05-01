@@ -5,14 +5,12 @@
 @section('content')
 <div class="min-h-screen bg-gray-100 py-10 px-4">
     <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
-        <!-- Header -->
         <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 sm:p-8">
             <h1 class="text-3xl font-bold text-white">Contact Admin</h1>
             <p class="text-indigo-100 mt-1">Send a new message or view responses from admin.</p>
         </div>
 
         <div class="p-6 sm:p-8">
-            <!-- Previous Requests -->
             @if($tickets->isNotEmpty())
             <div class="mb-10">
                 <h2 class="text-xl font-semibold text-gray-800 mb-4">Your Previous Requests</h2>
@@ -58,7 +56,6 @@
             </div>
             @endif
 
-            <!-- New Request -->
             <div class="border-t pt-6">
                 <h2 class="text-xl font-semibold text-gray-800 mb-4">New Request</h2>
                 <form method="POST"

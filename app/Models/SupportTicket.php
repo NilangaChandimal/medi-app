@@ -20,13 +20,8 @@ class SupportTicket extends Model
     {
         return $this->morphTo();
     }
-
-    // public function admin()
-    // {
-    //     return $this->belongsTo(User::class);
-    // }
     public function admin()
 {
-    return $this->belongsTo(Admin::class); // Instead of User::class
+    return $this->belongsTo(Admin::class); 
 }
 }

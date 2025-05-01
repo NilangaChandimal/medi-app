@@ -14,9 +14,7 @@
 </head>
 
 <body class="bg-gray-100">
-    <!-- Full page flex container to center content -->
     <div class="min-h-screen flex items-center justify-center px-4">
-        <!-- Card -->
         <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-lg">
             <h2 class="text-center text-3xl font-bold text-gray-800">Forgot Your Password?</h2>
 

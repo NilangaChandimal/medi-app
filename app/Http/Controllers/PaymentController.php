@@ -19,17 +19,15 @@ class PaymentController extends Controller
 
     $message = Message::findOrFail($messageId);
 
-    // Validate total exists and is valid
     if ($message->total <= 0) {
         return redirect()->back()->with('error', 'Invalid payment amount');
     }
 
     try {
-        // ✅ Use actual message total converted to cents
         $amount = (int)($message->total * 100);
 
         $paymentIntent = \Stripe\PaymentIntent::create([
-            'amount' => $amount, // Use calculated amount
+            'amount' => $amount,
             'currency' => 'usd',
             'metadata' => [
                 'chat_id' => $chatId,
@@ -42,7 +40,7 @@ class PaymentController extends Controller
             'chatId' => $chatId,
             'messageId' => $messageId,
             'stripePublicKey' => config('services.stripe.key'),
-            'total' => $message->total // Add this to pass to view
+            'total' => $message->total
         ]);
 
     } catch (\Exception $e) {
@@ -62,18 +60,14 @@ public function processPayment(Request $request, $chatId, $messageId)
     ]);
 
     try {
-        // Verify database connection first
         DB::connection()->getPdo();
 
-        // Get the payment intent ID from the form
         $paymentIntentId = $request->paymentIntentId;
 
-        // Retrieve payment details from Stripe
         try {
             \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
             $paymentIntent = \Stripe\PaymentIntent::retrieve($paymentIntentId);
 
-            // Get the actual amount paid (convert from cents to dollars)
             $amount = $paymentIntent->amount / 100;
             $currency = strtoupper($paymentIntent->currency);
 
@@ -86,7 +80,6 @@ public function processPayment(Request $request, $chatId, $messageId)
             return back()->with('error', 'Payment verification failed: ' . $e->getMessage());
         }
 
-        // Format the address from form inputs
         $address = [
             'line1' => $request->address_line1,
             'line2' => $request->address_line2 ?: null,
@@ -116,7 +109,6 @@ public function processPayment(Request $request, $chatId, $messageId)
                 'updated_at' => now()
             ];
 
-            // First try direct DB insert
             $directInsert = DB::table('payments')->insert($paymentData);
 
             if ($directInsert) {
@@ -125,7 +117,6 @@ public function processPayment(Request $request, $chatId, $messageId)
                     ->with('success', "Payment of $currency $amount successful!");
             }
 
-            // Fallback to Eloquent if direct insert fails
             $payment = new Payment($paymentData);
             $payment->save();
 

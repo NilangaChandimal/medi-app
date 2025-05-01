@@ -5,7 +5,6 @@
 @section('content')
 <div class="max-w-3xl mx-auto px-4 py-8">
     <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-        <!-- Header -->
         <div class="bg-gradient-to-r from-blue-500 to-indigo-600 px-6 py-4">
             <h1 class="text-2xl font-bold text-white flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -16,19 +15,16 @@
             <p class="text-blue-100 mt-1">Share updates, images or videos with your community</p>
         </div>
 
-        <!-- Post Creation Form -->
         <div class="p-6">
             <form action="{{ route('customer.post.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                 @csrf
 
-                <!-- Textarea for post content -->
                 <div class="rounded-lg bg-gray-50 p-4 border border-gray-200">
                     <label for="content" class="block text-sm font-medium text-gray-700 mb-1">What's on your mind?</label>
                     <textarea name="content" rows="4" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white resize-none" placeholder="Share your thoughts, questions or updates..." required></textarea>
                 </div>
 
                 <div class="grid md:grid-cols-2 gap-6">
-                    <!-- File upload for images -->
                     <div class="rounded-lg border-2 border-dashed border-gray-300 p-6 text-center hover:bg-gray-50 transition-colors group">
                         <div class="space-y-2">
                             <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400 group-hover:text-blue-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -40,11 +36,10 @@
                                 </label>
                                 <p class="text-xs text-gray-500 mt-1">PNG, JPG, GIF up to 10MB</p>
                             </div>
-                            <input id="image" name="image" type="file" accept="image/*" class="hidden">
+                            <input id="image" name="image[]" type="file" accept="image/*" multiple class="hidden">
                         </div>
                     </div>
 
-                    <!-- File upload for videos -->
                     <div class="rounded-lg border-2 border-dashed border-gray-300 p-6 text-center hover:bg-gray-50 transition-colors group">
                         <div class="space-y-2">
                             <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400 group-hover:text-blue-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -61,7 +56,6 @@
                     </div>
                 </div>
 
-                <!-- Tags/Visibility -->
                 <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
                     <label for="visibility" class="block text-sm font-medium text-gray-700 mb-2">Who can see this post?</label>
                     <select name="visibility" class="w-full p-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none">
@@ -71,7 +65,6 @@
                     <p class="mt-2 text-xs text-gray-500">Select who can view your post content</p>
                 </div>
 
-                <!-- Submit button -->
                 <div class="flex items-center justify-between pt-4">
                     <button type="button" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-200">
                         <a href="{{ route('customer.post.index') }}">
@@ -88,7 +81,6 @@
         </div>
     </div>
 
-    <!-- Display validation errors if any -->
     @if ($errors->any())
     <div class="mt-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-md">
         <div class="flex items-center">
@@ -111,7 +103,6 @@
 </div>
 
 <script>
-    // Display file name when selected
     document.getElementById('image').addEventListener('change', function(e) {
         const fileName = e.target.files[0] ? e.target.files[0].name : 'No file selected';
         const parent = this.closest('.group');

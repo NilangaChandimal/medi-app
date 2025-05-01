@@ -47,16 +47,6 @@ class Pharmacy extends Authenticatable
         return $this->hasMany(Chat::class);
     }
 
-    public function orders()
-    {
-        return $this->hasMany(Order::class);
-    }
-
-    public function feedbacks()
-    {
-        return $this->hasMany(Feedback::class);
-    }
-
     public function customers()
     {
         return $this->belongsToMany(Customer::class);

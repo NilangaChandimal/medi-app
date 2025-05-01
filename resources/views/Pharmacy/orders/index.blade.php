@@ -3,19 +3,14 @@
 @section('title', 'Orders')
 
 @section('content')
-<!-- Background pattern -->
-<div class="absolute top-0 right-0 -z-10 w-full h-64 bg-gradient-to-r from-indigo-500/10 to-purple-500/10"></div>
-
 <div class="container mx-auto px-4 py-8">
-    <!-- Page Header -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
         <div>
-            <h1 class="text-3xl font-bold text-gray-900">Orders</h1>
+            <h1 class="text-3xl font-bold text-gray-100">Orders</h1>
             <p class="mt-1 text-gray-500">Manage your customer orders</p>
         </div>
     </div>
 
-    <!-- Summary Cards -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div class="bg-white rounded-xl shadow-md border border-gray-100 p-6 flex items-center transition-transform hover:scale-105">
             <div class="rounded-full bg-blue-50 p-3 mr-4">
@@ -70,8 +65,6 @@
 
     </div>
 
-
-    <!-- Search & Filter -->
     <form method="GET" class="mb-6 flex flex-col sm:flex-row gap-4">
         <div class="relative flex-grow">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -105,8 +98,6 @@
         </div>
     </form>
 
-
-    <!-- Orders Table -->
     <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">

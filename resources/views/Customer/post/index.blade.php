@@ -3,11 +3,11 @@
 @section('title', 'Manage Posts')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-blue-50 ">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <!-- Header Section -->
         <div class="relative mb-12">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+
                 <div class="relative z-10">
                     <h1 class="text-4xl font-bold text-gray-900 leading-tight">
                         Your Creative Space
@@ -18,7 +18,7 @@
                 </div>
                 <div class="mt-6 md:mt-0">
                     <a href="{{ route('customer.post.create') }}"
-                        class="group inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl">
+                        class="group inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl">
                         <span class="relative inline-flex items-center">
                             <svg class="w-5 h-5 mr-2 transform group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
@@ -30,9 +30,8 @@
             </div>
         </div>
 
-        <!-- Success Message -->
         @if(session('success'))
-            <div class="mb-8 animate-fade-in-down">
+            <div class="mb-8 animate-pulse">
                 <div class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white p-4 rounded-xl shadow-lg">
                     <div class="flex items-center">
                         <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -44,22 +43,62 @@
             </div>
         @endif
 
-        <!-- Posts Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @forelse($posts as $post)
-                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100">
                     <div class="relative">
                         @if($post->image)
-                            <div class="aspect-w-16 aspect-h-9">
-                                <img src="{{ asset($post->image) }}"
-                                     alt="Post Image"
-                                     class="object-cover w-full h-full transform hover:scale-105 transition-transform duration-500">
-                            </div>
+                            @if(is_array(json_decode($post->image)))
+                                <div class="relative aspect-w-16 aspect-h-9 overflow-hidden">
+                                    <img src="{{ asset(json_decode($post->image)[0]) }}" alt="Post Image"
+                                         class="object-cover w-full h-full transform hover:scale-105 transition-transform duration-500">
+
+                                    @if(count(json_decode($post->image)) > 1)
+                                        <div class="absolute top-2 right-2 bg-black bg-opacity-60 text-white rounded-full px-2 py-1 text-xs font-medium">
+                                            <span class="flex items-center">
+                                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                                                </svg>
+                                                {{ count(json_decode($post->image)) }}
+                                            </span>
+                                        </div>
+                                    @endif
+                                </div>
+
+                                @if(count(json_decode($post->image)) > 1)
+                                    <div class="grid grid-cols-4 gap-1 mt-1">
+                                        @foreach(array_slice(json_decode($post->image), 1, 4) as $index => $image)
+                                            <div class="aspect-w-1 aspect-h-1 overflow-hidden rounded">
+                                                <img src="{{ asset($image) }}" alt="Preview {{ $index + 2 }}"
+                                                     class="object-cover w-full h-full">
+                                            </div>
+
+                                            @if($index === 3 && count(json_decode($post->image)) > 5)
+                                                <div class="absolute bottom-1 right-1 bg-black bg-opacity-60 text-white text-xs rounded px-1">
+                                                    +{{ count(json_decode($post->image)) - 5 }} more
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                @endif
+                            @else
+                                <div class="aspect-w-16 aspect-h-9">
+                                    <img src="{{ asset($post->image) }}" alt="Post Image"
+                                         class="object-cover w-full h-full transform hover:scale-105 transition-transform duration-500">
+                                </div>
+                            @endif
                         @elseif($post->video)
-                            <div class="aspect-w-16 aspect-h-9">
+                            <div class="aspect-w-16 aspect-h-9 relative">
                                 <video class="object-cover w-full h-full" controls>
                                     <source src="{{ asset($post->video) }}" type="video/mp4">
                                 </video>
+                                <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center pointer-events-none">
+                                    <div class="w-16 h-16 rounded-full bg-white bg-opacity-80 flex items-center justify-center">
+                                        <svg class="w-8 h-8 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
                         @else
                             <div class="aspect-w-16 aspect-h-9 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
@@ -77,13 +116,18 @@
                             </svg>
                             {{ $post->created_at->format('M d, Y • h:i A') }}
                         </div>
-                        <p>{{ $post->visibility }}</p>
+
+                        <div class="mb-3">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $post->visibility == 'public' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800' }}">
+                                {{ ucfirst($post->visibility) }}
+                            </span>
+                        </div>
 
                         <p class="text-gray-800 mb-4 line-clamp-3">{{ $post->content }}</p>
 
                         <div class="flex items-center justify-between pt-4 border-t border-gray-100">
                             <a href="{{ route('customer.post.edit', $post->id) }}"
-                               class="inline-flex items-center px-3 py-2 text-sm font-medium text-amber-600 hover:text-amber-700 transition-colors duration-200">
+                               class="inline-flex items-center px-3 py-2 text-sm font-medium text-indigo-600 hover:text-indigo-700 transition-colors duration-200">
                                 <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                 </svg>
@@ -107,8 +151,8 @@
                 </div>
             @empty
                 <div class="col-span-full">
-                    <div class="bg-white rounded-xl shadow-lg p-12 text-center">
-                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 text-blue-600 mb-6">
+                    <div class="bg-white rounded-xl shadow-lg p-12 text-center border border-dashed border-gray-200">
+                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-indigo-100 text-indigo-600 mb-6">
                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
@@ -116,13 +160,19 @@
                         <h3 class="text-xl font-semibold text-gray-900 mb-2">Start Creating</h3>
                         <p class="text-gray-500 mb-6">Share your first post with your audience</p>
                         <a href="{{ route('customer.post.create') }}"
-                           class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl">
+                           class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl">
                             Create Your First Post
                         </a>
                     </div>
                 </div>
             @endforelse
         </div>
+
+        @if(isset($posts) && $posts->hasPages())
+        <div class="mt-12 flex justify-center">
+            {{ $posts->links() }}
+        </div>
+        @endif
     </div>
 </div>
 @endsection

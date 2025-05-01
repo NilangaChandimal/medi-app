@@ -24,17 +24,13 @@ class PharmacyAuthController extends Controller
         if (Auth::guard('pharmacy')->attempt($credentials)) {
             $pharmacy = Auth::guard('pharmacy')->user();
 
-            // Check if the pharmacy is blocked
 
         if ($pharmacy->is_blocked == 1) {
-            // Log out and redirect with an error if blocked
             Auth::guard('pharmacy')->logout();
             return redirect()->back()->with('blocked', 'Your account has been Tempory blocked contact the hotline!!');
         }
 
-        // Check if the worker is checked
         if ($pharmacy->status == "inactive") {
-            // Log out and redirect with an error if checked
             Auth::guard('pharmacy')->logout();
             return redirect()->back()->with('checked', 'Your account not checked, please wait until check your account!!');
         }
@@ -127,7 +123,6 @@ public function update(Request $request)
         ],
     ]);
 
-    // Handle profile image
     if ($request->hasFile('profile_image')) {
         if ($pharmacy->profile_image) {
             Storage::delete($pharmacy->profile_image);
@@ -135,7 +130,6 @@ public function update(Request $request)
         $validated['profile_image'] = $request->file('profile_image')->store('pharmacy-profile');
     }
     unset($validated['old_password']);
-    // Update password if provided
     if (!empty($validated['password'])) {
         $validated['password'] = Hash::make($validated['password']);
     } else {

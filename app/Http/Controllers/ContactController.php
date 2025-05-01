@@ -32,7 +32,7 @@ class ContactController extends Controller
         'subject' => $request->subject,
         'message' => $request->message,
         'user_id' => $user->id,
-        'user_type' => get_class($user), // Will return either App\Models\Customer or App\Models\Pharmacy
+        'user_type' => get_class($user), // Will return either Customer or Pharmacy
     ]);
 
     return redirect()->back()->with('success', 'Your message has been sent to admin!');

@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('chat_id')->constrained()->onDelete('cascade');
             $table->unsignedBigInteger('sender_id');
-            $table->string('sender_type'); // Add this line to specify the type of sender (customer, pharmacy, etc.)
-            $table->text('message')->charset('utf8mb4')->collation('utf8mb4_unicode_ci');
-            $table->string('file_path')->nullable(); // Add this line to store file paths
+            $table->string('sender_type');
+            $table->text('message')->charset('utf8mb4')->collation('utf8mb4_unicode_ci')->nullable();
+            $table->string('file_path')->nullable();
+            $table->boolean('payment_button')->default(0);
             $table->timestamps();
             $table->index(['sender_id', 'sender_type']);
         });

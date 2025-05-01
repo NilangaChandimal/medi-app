@@ -5,13 +5,11 @@
 @section('content')
 <div class="bg-gradient-to-b from-blue-50 to-white min-h-screen">
     <div class="container mx-auto px-4 py-10">
-        <!-- Hero Section -->
         <div class="text-center mb-10">
             <h1 class="text-4xl font-extrabold text-blue-800 mb-4">Find Your Pharmacy</h1>
             <p class="text-gray-600 max-w-2xl mx-auto">Connect with local pharmacies, check ratings, and start conversations with healthcare professionals.</p>
         </div>
 
-        <!-- Search Bar -->
         <div class="max-w-2xl mx-auto mb-12 relative">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -35,7 +33,6 @@
         @endphp
 
         @if ($pharmacies->isEmpty())
-            <!-- Empty State -->
             <div class="bg-white rounded-2xl p-10 text-center shadow-lg max-w-2xl mx-auto border border-gray-100">
                 <div class="bg-blue-50 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
                     <svg class="w-10 h-10 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -52,11 +49,9 @@
                 </a>
             </div>
         @else
-            <!-- Pharmacy Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 @foreach ($pharmacies as $pharmacy)
                     <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1">
-                        <!-- Card Header with Pharmacy Image -->
                         <div class="bg-gradient-to-r from-blue-500 to-indigo-600 h-24 relative">
                             <div class="absolute -bottom-10 left-6">
                                 @php
@@ -73,11 +68,9 @@
                             </div>
                         </div>
 
-                        <!-- Card Content -->
                         <div class="p-6 pt-12">
                             <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $pharmacy->name }}</h3>
 
-                            <!-- Registration Number -->
                             <div class="inline-flex items-center bg-blue-50 rounded-full px-3 py-1 text-sm text-blue-700 font-medium mb-3">
                                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -85,7 +78,6 @@
                                 {{ $pharmacy->registration_number }}
                             </div>
 
-                            <!-- Location -->
                             <div class="flex items-start space-x-2 mb-2">
                                 <svg class="w-5 h-5 text-gray-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
@@ -97,7 +89,6 @@
                                 </div>
                             </div>
 
-                            <!-- Phone -->
                             <div class="flex items-center space-x-2 mb-4">
                                 <svg class="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
@@ -105,7 +96,6 @@
                                 <span class="text-gray-600 text-sm">{{ $pharmacy->phone }}</span>
                             </div>
 
-                            <!-- Rating -->
                             @php
                                 $averageRating = round($pharmacy->ratings_avg_rating ?? 0);
                             @endphp
@@ -122,7 +112,6 @@
                                 </span>
                             </div>
 
-                            <!-- Chat Button -->
                             <form method="POST" action="{{ route('customer.startChat', $pharmacy->id) }}">
                                 @csrf
                                 <button type="submit"

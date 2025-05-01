@@ -62,7 +62,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         //chats
         Route::get('/chats', [AdminController::class, 'chatindex'])->name('chats.index');
         Route::get('/chats/{chat}', [AdminController::class, 'chatshow'])->name('chats.show');
-        // Route::delete('/chats/{chat}', [AdminController::class, 'chatdestroy'])->name('chats.destroy');
 
         //suport
         Route::get('/admin/support-tickets', [AdminSupportController::class, 'index'])->name('support.index');
@@ -161,7 +160,6 @@ Route::prefix('customer')->name('customer.')->group(function () {
         Route::post('chats/{id}/message', [ChatController::class, 'storeMessage'])->name('chats.storeMessage');
         Route::get('chats/start/{pharmacy}', [PharmacyController::class, 'startChat'])->name('startChat');
         Route::post('chats/start/{pharmacy}', [PharmacyController::class, 'startChat'])->name('startChat.store');
-        // Route::post('order', [OrderController::class, 'store'])->name('customer.order.store');
         Route::post('send-medicine-details', [PharmacyController::class, 'sendMedicineDetails'])->name('sendMedicineDetails');
 
         Route::get('/chats/{chatId}/message/{messageId}/pay', [PaymentController::class, 'showPaymentPage'])->name('pay');

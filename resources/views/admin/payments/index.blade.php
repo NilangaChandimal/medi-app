@@ -4,7 +4,6 @@
 
 @section('content')
 <div class="container mx-auto px-4 py-8 max-w-7xl">
-    <!-- Dashboard Header -->
     <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg shadow-lg p-6 text-white mb-8">
         <div class="flex items-center justify-between">
             <div>
@@ -19,7 +18,6 @@
         </div>
     </div>
 
-    <!-- Stats Overview -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-green-500">
             <div class="flex items-center">
@@ -64,7 +62,6 @@
         </div>
     </div>
 
-    <!-- Payment Table -->
     <div class="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-100">
         <div class="px-6 py-4 border-b bg-gradient-to-r from-indigo-50 to-purple-50 flex justify-between items-center">
             <div>
@@ -115,7 +112,7 @@
                             <td class="px-6 py-4">
                                 <div class="flex items-center">
                                     <div class="bg-green-50 text-green-700 px-2 py-1 rounded flex items-center">
-                                        
+
                                         <span class="font-medium">Rs.{{ number_format($payment->amount, 2) }}</span>
                                     </div>
                                 </div>
@@ -155,11 +152,6 @@
         <div class="px-4 py-3 border-t bg-gray-50">
             {{ $payments->links() }}
         </div>
-    </div>
-
-    <!-- Footer -->
-    <div class="text-center text-gray-500 text-sm mt-8">
-        <p>© 2025 Your Pharmacy Management System. All rights reserved.</p>
     </div>
 </div>
 @endsection

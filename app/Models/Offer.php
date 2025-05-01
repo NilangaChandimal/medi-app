@@ -13,7 +13,6 @@ class Offer extends Model
         'chat_id', 'name', 'price', 'quantity', 'total',
     ];
 
-    // Define any relationships if needed
     public function chat()
     {
         return $this->belongsTo(Chat::class);

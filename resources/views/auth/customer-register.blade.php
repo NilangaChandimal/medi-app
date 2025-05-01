@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Register</title>
-    {{-- @vite('resources/css/app.css') --}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
@@ -12,10 +11,7 @@
       style="background-image: url('{{ asset('images/customer-background.jpg') }}');">
     <div class="max-w-2xl mx-auto">
 
-
-        <!-- Registration Form Card -->
         <div class="bg-white shadow-2xl rounded-lg py-8 px-6">
-            <!-- Header Section -->
         <div class="text-center mb-8">
             <h2 class="text-3xl font-extrabold text-gray-900">Create Your Account</h2>
             <p class="mt-2 text-sm text-gray-600">Join our professional network</p>
@@ -23,7 +19,6 @@
             <form method="POST" action="{{ route('customer.register') }}" enctype="multipart/form-data" class="space-y-6">
                 @csrf
 
-                <!-- Profile Image Upload -->
                 <div class="flex flex-col items-center space-y-4">
                     <label for="profile_image" class="cursor-pointer">
                         <div class="relative group">
@@ -38,7 +33,6 @@
                     </label>
                 </div>
 
-                <!-- Personal Information Section -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
@@ -55,7 +49,6 @@
                     </div>
                 </div>
 
-                <!-- Professional Information Section -->
                 <div class="space-y-6">
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -83,7 +76,6 @@
 
                 </div>
 
-                <!-- Password Section -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
@@ -100,7 +92,6 @@
                     </div>
                 </div>
 
-                <!-- Submit Button -->
                 <div>
                     <button type="submit"
                             class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out">

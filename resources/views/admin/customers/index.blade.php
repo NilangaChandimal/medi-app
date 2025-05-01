@@ -5,7 +5,6 @@
 @section('content')
 <div class="container mx-auto px-4 py-8 max-w-7xl">
     <div class="space-y-8">
-        <!-- Dashboard Header -->
         <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg shadow-lg p-6 text-white">
             <div class="flex items-center justify-between">
                 <div>
@@ -13,14 +12,11 @@
                     <p class="text-indigo-100 mt-2">Manage your customers and pharmacies in one place</p>
                 </div>
                 <div class="hidden md:block">
-                    <!-- Font Awesome Users Icon -->
                     <i class="fa fa-users text-white opacity-80 text-4xl"></i>
                 </div>
             </div>
         </div>
 
-
-        <!-- Customers Section -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-100">
             <div class="px-6 py-4 border-b bg-gradient-to-r from-indigo-50 to-purple-50 flex justify-between items-center">
                 <div>
@@ -86,7 +82,6 @@
             </div>
         </div>
 
-        <!-- Pharmacies Section -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-100">
             <div class="px-6 py-4 border-b bg-gradient-to-r from-indigo-50 to-purple-50 flex justify-between items-center">
                 <div>
@@ -152,10 +147,6 @@
             </div>
         </div>
 
-        <!-- Footer -->
-        <div class="text-center text-gray-500 text-sm">
-            <p>© 2025 Your Pharmacy Management System. All rights reserved.</p>
-        </div>
     </div>
 </div>
 @endsection

@@ -7,7 +7,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100" >
+<body class="bg-transparent bg-gray-900">
 
     @if(auth()->guard('customer')->check())
         @include('components.nav-customer')
@@ -19,6 +19,9 @@
 
     <div class="container mx-auto px-4 py-12">
         @yield('content')
+        {{-- <div class="text-center text-gray-500 text-sm mt-8">
+            <p>© 2025 Your Pharmacy Management System. All rights reserved.</p>
+        </div> --}}
     </div>
 
 </body>

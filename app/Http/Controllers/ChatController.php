@@ -34,12 +34,11 @@ class ChatController extends Controller
 
     public function show($id)
 {
-    $chat = Chat::findOrFail($id); // Retrieve the chat
+    $chat = Chat::findOrFail($id);
     $messages = $chat->messages;
     $user = Auth::user();
 
-    // Fetch the offer data separately if it's stored in a separate table
-    $offers = Offer::where('chat_id', $id)->get(); // Assuming you have an 'offers' table with a foreign key to the 'chats' table
+    $offers = Offer::where('chat_id', $id)->get();
 
     // Filter chats based on the user type (Customer or pharmacy)
     if ($user instanceof \App\Models\Customer) {
@@ -49,16 +48,12 @@ class ChatController extends Controller
         $chats = Chat::where('pharmacy_id', $user->id)->get();
         $userType = 'pharmacy';
     } else {
-        $chats = collect(); // No chats for other users
+        $chats = collect();
         $userType = '';
     }
 
     return view('chats.show', compact('chat', 'messages', 'offers', 'userType', 'chats'));
 }
-
-
-
-
 
     public function storeMessage(Request $request, $id)
 {
@@ -74,7 +69,7 @@ class ChatController extends Controller
     $message = new Message();
     $message->chat_id = $chat->id;
     $message->sender_id = $user->id;
-    $message->sender_type = get_class($user); // Store the sender type (Customer, pharmacy, etc.)
+    $message->sender_type = get_class($user); // Store the sender type (Customer, pharmacy)
 
     // Handle text message
     if ($request->filled('message')) {
@@ -111,7 +106,6 @@ class ChatController extends Controller
 public function sendOffer(Request $request, $chatId)
 {
     try {
-        // Validate the incoming request
         $offerData = $request->validate([
             'medicines' => 'required|array',
             'medicines.*.name' => 'required|string',
@@ -123,20 +117,18 @@ public function sendOffer(Request $request, $chatId)
         $chat = Chat::findOrFail($chatId);
         $user = Auth::user();
 
-        // Build message content
-        $messageContent = "🧾 Medicine Offer:\n";
+        $messageContent = "Medicine Offer:\n";
         foreach ($offerData['medicines'] as $index => $medicine) {
             $name = $medicine['name'];
             $price = number_format($medicine['price'], 2);
             $quantity = $medicine['quantity'];
             $subtotal = number_format($medicine['price'] * $quantity, 2);
 
-            $messageContent .= ($index + 1) . ". {$name} - \${$price} x {$quantity} = \${$subtotal}\n";
+            $messageContent .= ($index + 1) . ". {$name} - Rs.{$price} x {$quantity} = Rs.{$subtotal}\n";
         }
 
-        $messageContent .= "\n💰 Total Offer Total: " . number_format($offerData['total'], 2, '.', '');
+        $messageContent .= "\n Total Offer Total: " . number_format($offerData['total'], 2, '.', '');
 
-        // Save the message
         $message = new Message();
         $message->chat_id = $chatId;
         $message->sender_id = $user->id;
@@ -145,7 +137,6 @@ public function sendOffer(Request $request, $chatId)
         $message->payment_button = true;
         $message->save();
 
-        // Optionally broadcast the message
         broadcast(new \App\Events\MessageSent($message))->toOthers();
 
         return response()->json(['message' => 'Offer sent successfully!'], 200);
@@ -155,8 +146,5 @@ public function sendOffer(Request $request, $chatId)
         return response()->json(['message' => 'Failed to send offer.'], 500);
     }
 }
-
-
-
 
 }

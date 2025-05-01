@@ -5,16 +5,11 @@
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-        <!-- Header section with gradient background -->
         <div class="bg-gradient-to-r from-blue-500 to-indigo-600 px-6 py-4">
             <h2 class="text-2xl font-bold text-white">Payment Details</h2>
         </div>
-
-        <!-- Content section -->
         <div class="p-6">
-            <!-- Payment information card -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Left column -->
                 <div class="space-y-4">
                     <div class="flex items-center">
                         <div class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 mr-3">
@@ -54,7 +49,6 @@
                     </div>
                 </div>
 
-                <!-- Right column -->
                 <div class="space-y-4">
                     <div class="flex items-center">
                         <div class="w-10 h-10 flex items-center justify-center rounded-full bg-yellow-100 text-yellow-600 mr-3">
@@ -97,7 +91,6 @@
                 </div>
             </div>
 
-            <!-- Message section -->
             <div class="mt-6 pt-6 border-t border-gray-200">
                 <h3 class="text-lg font-medium text-gray-900 mb-3">Order Message</h3>
                 <div class="bg-gray-50 rounded-lg p-4 text-gray-700">
@@ -105,7 +98,6 @@
                 </div>
             </div>
 
-            <!-- Action buttons -->
             <div class="mt-8 flex items-center space-x-4">
                 <a href="{{ route('admin.payments.index') }}" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">

@@ -8,13 +8,11 @@
 </head>
 <body class="bg-gray-50 min-h-screen">
     <div class="container mx-auto px-4 py-12">
-        <!-- Header -->
         <header class="mb-16 text-center">
             <h1 class="text-4xl font-bold text-blue-600 mb-2">MedLink</h1>
             <p class="text-xl text-gray-600">Your Comprehensive Pharmacy Management System</p>
         </header>
 
-        <!-- Main Content -->
         <div class="max-w-4xl mx-auto">
             <div class="bg-white rounded-lg shadow-xl overflow-hidden">
                 <div class="p-8 md:p-12">
@@ -22,7 +20,6 @@
                     <p class="text-gray-600 mb-8">Please select your login portal below to access the system</p>
 
                     <div class="grid md:grid-cols-2 gap-6">
-                        <!-- Pharmacy Login Card -->
                         <div class="bg-blue-50 rounded-lg p-6 transition-all hover:shadow-md">
                             <div class="flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 mx-auto mb-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -38,7 +35,6 @@
                             </div>
                         </div>
 
-                        <!-- Customer Login Card -->
                         <div class="bg-green-50 rounded-lg p-6 transition-all hover:shadow-md">
                             <div class="flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mx-auto mb-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -56,13 +52,11 @@
                     </div>
                 </div>
 
-                <!-- Footer -->
                 <div class="px-8 py-4 bg-gray-50 border-t border-gray-100">
                     <p class="text-sm text-gray-500 text-center">© 2025 MedLink. All rights reserved.</p>
                 </div>
             </div>
 
-            <!-- Additional Information -->
             <div class="mt-12 text-center">
                 <p class="text-gray-600 mb-4">Need help? Contact our support team</p>
                 <a href="mailto:nilangachandimal1111@gmail.com" class="text-blue-600 hover:text-blue-800 font-medium">nilangachandimal1111@gmail.com</a>

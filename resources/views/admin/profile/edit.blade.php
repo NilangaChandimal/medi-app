@@ -5,7 +5,6 @@
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
-        <!-- Header section with gradient background -->
         <div class="bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-4 flex items-center justify-between">
             <h2 class="text-2xl font-bold text-white">Admin Profile</h2>
             <div class="h-12 w-12 rounded-full bg-white/20 flex items-center justify-center text-white">
@@ -16,7 +15,6 @@
         </div>
 
         <div class="p-6">
-            {{-- Error handling --}}
             @if ($errors->any())
             <div class="mb-6 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded">
                 <div class="flex items-center mb-2">
@@ -47,7 +45,6 @@
                 @method('PUT')
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Left column -->
                     <div class="space-y-6">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
@@ -77,7 +74,6 @@
                         </div>
                     </div>
 
-                    <!-- Right column - Password fields -->
                     <div class="space-y-6">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Old Password</label>
@@ -123,7 +119,6 @@
                     </div>
                 </div>
 
-                <!-- Form actions -->
                 <div class="pt-6 border-t border-gray-200 flex items-center justify-end space-x-3">
                     <button type="submit"
                             class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 flex items-center">
